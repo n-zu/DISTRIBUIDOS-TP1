@@ -1,0 +1,71 @@
+@startuml
+
+<style>
+hexagon {
+  BackGroundColor #00000055
+  LineThickness 0
+  LineColor none
+}
+</style>
+
+actor User #666666
+
+frame system  {
+  agent controller #lightblue
+  queue requests #lightblue
+  hexagon t1 as " "
+  hexagon t2 as " " 
+  hexagon t3 as " "
+  hexagon t4 as " "
+
+  boundary console
+  agent cs as "Client\nService"
+  queue trips
+  collections ew as "Enrichment\nWorker"
+  queue records
+  collections fw as "Formatter\nWorker"
+  queue stats
+  agent aw as "Aggregation\nWorker"\
+
+  entity ts as "trip stream" #moccasin
+  file Weather #moccasin
+  file Stations #moccasin
+
+  hexagon r1 as " "
+  hexagon r2 as " "
+  queue results #aaeeaa
+}
+
+User -> console
+console -> cs
+cs -> trips
+trips -> ew
+ew -> records
+records -> fw
+fw -> stats
+stats -> aw
+
+aw --- r1
+results <- r1
+r2 - results
+cs <--- r2
+
+requests -> controller #darkred
+requests <--- cs #darkred
+requests <--- ew #darkred
+requests <--- fw #darkred
+
+ts --> cs
+ew <-- Weather
+ew <-- Stations
+
+
+t1 --> trips #darkblue
+t2 --> records #darkblue
+t4 --> stats #darkblue
+t1 -ri- t2 #darkblue
+t2 -ri- t3 #darkblue
+t3 -ri- t4 #darkblue
+controller -- t3 #darkblue
+
+@enduml
