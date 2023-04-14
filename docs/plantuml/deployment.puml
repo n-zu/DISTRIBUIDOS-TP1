@@ -8,26 +8,24 @@ node cop as "Process" {
 }
 node csp as "Process" {
   component cs as "Client Service"
-}
-node ewp as "Process *" {
-  component ew as "Enrichment Worker"
   file Weather
   file Stations
 }
-node fwp as "Process *" {
-  component fw as "Formatter Worker"
+node ewp as "Process *" {
+  component ew as "Worker"
+
 }
 node awp as "Process" {
-  component aw as "Aggregation Worker"
+  component aw as "Aggregator"
 }
 
 cs <-> mq
 mq <-> co
 mq <--> ew
 mq <--> aw
-mq <--> fw
+cs --> ew
 
-ew <-- Weather
-ew <-- Stations
+cs <-- Weather
+cs <-- Stations
 
 @enduml

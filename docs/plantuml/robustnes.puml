@@ -16,56 +16,45 @@ frame system  {
   hexagon t1 as " "
   hexagon t2 as " " 
   hexagon t3 as " "
-  hexagon t4 as " "
 
   boundary console
   agent cs as "Client\nService"
   queue trips
-  collections ew as "Enrichment\nWorker"
-  queue records
-  collections fw as "Formatter\nWorker"
+  collections ew as "Worker"
   queue stats
-  agent aw as "Aggregation\nWorker"\
+  agent aw as "Aggregator"
 
-  entity ts as "trip stream" #moccasin
+  entity ts as "trip stream"
   file Weather #moccasin
   file Stations #moccasin
 
-  hexagon r1 as " "
-  hexagon r2 as " "
   queue results #aaeeaa
 }
 
 User -> console
-console -> cs
+console <- cs
 cs -> trips
 trips -> ew
-ew -> records
-records -> fw
-fw -> stats
+ew -> stats
 stats -> aw
 
-aw --- r1
-results <- r1
-r2 - results
-cs <--- r2
+aw --> results
+cs <-- results
 
 requests -> controller #darkred
 requests <--- cs #darkred
 requests <--- ew #darkred
-requests <--- fw #darkred
 
-ts --> cs
-ew <-- Weather
-ew <-- Stations
+ts -up-> cs
+Weather --> cs #orange
+Stations --> cs #orange
 
+cs =>> ew #orange
 
 t1 --> trips #darkblue
-t2 --> records #darkblue
-t4 --> stats #darkblue
+t3 --> stats #darkblue
 t1 -ri- t2 #darkblue
 t2 -ri- t3 #darkblue
-t3 -ri- t4 #darkblue
-controller -- t3 #darkblue
+controller -- t2 #darkblue
 
 @enduml
