@@ -8,6 +8,8 @@ services:
     entrypoint: python3 /main.py
     networks:
       - dtp1_net
+    volumes:
+      - ./data:/data
 
   worker:
     container_name: worker

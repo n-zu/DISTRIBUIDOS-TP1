@@ -1,29 +1,20 @@
-#
-#   Hello World server in Python
-#   Binds REP socket to tcp://*:5555
-#   Expects b"Hello" from client, replies with b"World"
-#
-
-import time
 import zmq
 import logging
+from common.setup import setup
+from common.upload_data import upload_weather
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-context = zmq.Context()
-socket = context.socket(zmq.REP)
-socket.bind("tcp://*:5555")
+def main():
+    setup()
 
-logging.debug("Server started")
+    upload_weather()
 
-while True:
-    #  Wait for next request from client
-    message = socket.recv()
-    logging.debug("Received request: %s" % message)
+    # upload_stations()
 
-    #  Do some 'work'
-    time.sleep(1)
+    # stream_trips()
 
-    #  Send reply back to client
-    socket.send(b"World")
+    # get_stats()
+
+
+if __name__ == "__main__":
+    main()
