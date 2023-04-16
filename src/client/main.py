@@ -1,7 +1,6 @@
-import zmq
-import logging
 from common.setup import setup
 from common.upload_data import upload_weather
+from time import sleep
 
 
 def main():

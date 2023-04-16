@@ -1,13 +1,13 @@
 import zmq
 import logging
 
-PUB_PORT = 5556
+SUB_ADDR = "client:5556"
 
 
 class Config:
     def __init__(self):
         self.context = None
-        self.pub_socket = None
+        self.sub_socket = None
 
 
 config = Config()
@@ -31,9 +31,10 @@ def loggingSetup():
 
 def zmqSetup():
     config.context = zmq.Context()
+    config.sub_socket = config.context.socket(zmq.SUB)
 
-    config.pub_socket = config.context.socket(zmq.PUB)
-    config.pub_socket.bind(f'tcp://*:{PUB_PORT}')
+    config.sub_socket.connect(f'tcp://{SUB_ADDR}')
+    config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "weather")
 
 
 def setup():

@@ -2,6 +2,13 @@ version: "3.9"
 name: distribuidos-tp1
 
 services:
+  worker:
+    container_name: worker
+    image: worker:latest
+    entrypoint: python3 /main.py
+    networks:
+      - dtp1_net
+
   client:
     container_name: client
     image: client:latest
@@ -10,13 +17,6 @@ services:
       - dtp1_net
     volumes:
       - ./data:/data
-
-  worker:
-    container_name: worker
-    image: worker:latest
-    entrypoint: python3 /main.py
-    networks:
-      - dtp1_net
 
 networks:
   dtp1_net:
