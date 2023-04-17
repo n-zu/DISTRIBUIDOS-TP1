@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="347px" preserveAspectRatio="none" style="width:732px;height:347px;background:#FFFFFF;" version="1.1" viewBox="0 0 732 347" width="732px" zoomAndPan="magnify">
+   <defs />
+   <g>
+      <!--cluster rp-->
+      <g id="cluster_rp">
+         <polygon fill="none" points="299,16,309,6,443,6,443,98,433,108,299,108,299,16" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="433" x2="443" y1="16" y2="6" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="299" x2="433" y1="16" y2="16" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="433" x2="433" y1="16" y2="108" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63" x="335.5" y="31.9951">Process</text>
+      </g>
+      <!--cluster cop-->
+      <g id="cluster_cop">
+         <polygon fill="none" points="467,16,477,6,613,6,613,98,603,108,467,108,467,16" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="603" x2="613" y1="16" y2="6" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="467" x2="603" y1="16" y2="16" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="603" x2="603" y1="16" y2="108" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63" x="504.5" y="31.9951">Process</text>
+      </g>
+      <!--cluster csp-->
+      <g id="cluster_csp">
+         <polygon fill="none" points="103,16,113,6,275,6,275,98,265,108,103,108,103,16" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="265" x2="275" y1="16" y2="6" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="103" x2="265" y1="16" y2="16" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="265" x2="265" y1="16" y2="108" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63" x="153.5" y="31.9951">Process</text>
+      </g>
+      <!--cluster ewp-->
+      <g id="cluster_ewp">
+         <polygon fill="none" points="16,142,26,132,245,132,245,320,235,330,16,330,16,142" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="235" x2="245" y1="142" y2="132" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="16" x2="235" y1="142" y2="142" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="235" x2="235" y1="142" y2="330" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="75" x="89" y="157.9951">Process *</text>
+
+         <polygon fill="none" points="16,142,36,122,255,122,255,310,235,330,16,330,16,142" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="245" x2="255" y1="132" y2="122" />
+      </g>
+      <!--cluster fwp-->
+      <g id="cluster_fwp">
+         <polygon fill="none" points="269,142,279,132,473,132,473,224,463,234,269,234,269,142" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="463" x2="473" y1="142" y2="132" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="269" x2="463" y1="142" y2="142" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="463" x2="463" y1="142" y2="234" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="75" x="329.5" y="157.9951">Process *</text>
+
+         <polygon fill="none" points="269,142,289,122,483,122,483,214,463,234,269,234,269,142" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="473" x2="483" y1="132" y2="122" />
+      </g>
+      <!--cluster awp-->
+      <g id="cluster_awp">
+         <polygon fill="none" points="497,142,507,132,715,132,715,224,705,234,497,234,497,142" style="stroke:#181818;stroke-width:1.0;" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="705" x2="715" y1="142" y2="132" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="497" x2="705" y1="142" y2="142" />
+         <line style="stroke:#181818;stroke-width:1.0;" x1="705" x2="705" y1="142" y2="234" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63" x="570.5" y="157.9951">Process</text>
+      </g>
+      <!--entity mq-->
+      <g id="elem_mq">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="112" x="315" y="46" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="407" y="51" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="405" y="53" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="405" y="57" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72" x="330" y="78.9951">RabbitMQ</text>
+      </g>
+      <!--entity co-->
+      <g id="elem_co">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="113" x="483.5" y="46" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="576.5" y="51" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="574.5" y="53" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="574.5" y="57" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73" x="498.5" y="78.9951">Controller</text>
+      </g>
+      <!--entity cs-->
+      <g id="elem_cs">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="140" x="119" y="46" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="239" y="51" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="237" y="53" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="237" y="57" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="100" x="134" y="78.9951">Client Service</text>
+      </g>
+      <!--entity ew-->
+      <g id="elem_ew">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="181" x="47.5" y="172" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="208.5" y="177" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="206.5" y="179" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="206.5" y="183" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="62.5" y="204.9951">Enrichment Worker</text>
+      </g>
+      <!--entity Weather-->
+      <g id="elem_Weather">
+         <path d="M32,280.5 L32,311.7969 A2.5,2.5 0 0 0 34.5,314.2969 L111.5,314.2969 A2.5,2.5 0 0 0 114,311.7969 L114,288 L104,278 L34.5,278 A2.5,2.5 0 0 0 32,280.5 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" />
+         <path d="M104,278 L104,285.5 A2.5,2.5 0 0 0 106.5,288 L114,288 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="42" y="300.9951">Weather</text>
+      </g>
+      <!--entity Stations-->
+      <g id="elem_Stations">
+         <path d="M149,280.5 L149,311.7969 A2.5,2.5 0 0 0 151.5,314.2969 L226.5,314.2969 A2.5,2.5 0 0 0 229,311.7969 L229,288 L219,278 L151.5,278 A2.5,2.5 0 0 0 149,280.5 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" />
+         <path d="M219,278 L219,285.5 A2.5,2.5 0 0 0 221.5,288 L229,288 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="159" y="300.9951">Stations</text>
+      </g>
+      <!--entity fw-->
+      <g id="elem_fw">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="171" x="285.5" y="172" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="436.5" y="177" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="434.5" y="179" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="434.5" y="183" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="300.5" y="204.9951">Formatter Worker</text>
+      </g>
+      <!--entity aw-->
+      <g id="elem_aw">
+         <rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="186" x="513" y="172" />
+         <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="679" y="177" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="677" y="179" />
+         <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="677" y="183" />
+         <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146" x="528" y="204.9951">Aggregation Worker</text>
+      </g>
+      <!--link cs to mq-->
+      <g id="link_cs_mq">
+         <path d="M264.235,69 C279.311,69 294.387,69 309.463,69 " fill="none" id="cs-mq" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="259.027,69,268.027,73,264.027,69,268.027,65,259.027,69" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="314.576,69,305.576,65,309.576,69,305.576,73,314.576,69" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--link mq to co-->
+      <g id="link_mq_co">
+         <path d="M432.364,69 C447.563,69 462.762,69 477.961,69 " fill="none" id="mq-co" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="427.113,69,436.113,73,432.113,69,436.113,65,427.113,69" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="483.116,69,474.116,65,478.116,69,474.116,73,483.116,69" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--link mq to ew-->
+      <g id="link_mq_ew">
+         <path d="M324.455,94.593 C307.048,103.803 287.11,114.367 269,124 C240.709,139.047 209.017,155.98 183.891,169.422 " fill="none" id="mq-ew" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="329.294,92.033,319.4682,92.7064,324.8745,94.3713,323.2095,99.7776,329.294,92.033" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="179.279,171.89,189.1016,171.1714,183.6877,169.5314,185.3278,164.1175,179.279,171.89" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--link mq to aw-->
+      <g id="link_mq_aw">
+         <path d="M417.334,94.449 C458.588,116.216 518.618,147.892 559.824,169.635 " fill="none" id="mq-aw" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="412.743,92.026,418.8364,99.7636,417.1652,94.3593,422.5696,92.6881,412.743,92.026" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="564.251,171.971,558.1596,164.2318,559.8294,169.6366,554.4246,171.3064,564.251,171.971" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--link mq to fw-->
+      <g id="link_mq_fw">
+         <path d="M371,97.353 C371,117.912 371,145.957 371,166.542 " fill="none" id="mq-fw" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="371,92.169,367,101.169,371,97.169,375,101.169,371,92.169" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="371,171.605,375,162.605,371,166.605,367,162.605,371,171.605" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--reverse link ew to Weather-->
+      <g id="link_ew_Weather">
+         <path d="M120.398,222.809 C108.891,240.335 94.2034,262.7055 84.2502,277.865 " fill="none" id="ew-backto-Weather" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="123.25,218.465,114.9669,223.7932,120.5059,222.6447,121.6544,228.1837,123.25,218.465" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--reverse link ew to Stations-->
+      <g id="link_ew_Stations">
+         <path d="M152.041,223.255 C161.035,240.714 172.43,262.834 180.173,277.865 " fill="none" id="ew-backto-Stations" style="stroke:#181818;stroke-width:1.0;" />
+         <polygon fill="#181818" points="149.573,218.465,150.1396,228.2975,151.8632,222.9097,157.2511,224.6332,149.573,218.465" style="stroke:#181818;stroke-width:1.0;" />
+      </g>
+      <!--SRC=[XP2z3i8m38JtF8NL4OatG4W8mOO4TEYS1hT4j75n8Z8Wtfsaly1GjZjRdqzdGnS4Ra1QI8vC2grDu2a05DKD6JGEwdkxFSiyr-vmIiHBc4WfciKKjTij6STKLSWJQET1su6LZYv5VcY58up-2uR5Buw-tUyCQtMjuoGZliLuW49N21bATqKUREgaqsJi453y2oYwW3rnBPr37k_t1wIVhISxV5EMZ6KR_N50XFAhvJhyN8ItHwMeKq6Y7wMSPE6529s37flrTcZs1W00]-->
+   </g>
+</svg>
