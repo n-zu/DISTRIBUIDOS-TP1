@@ -3,11 +3,11 @@ name: distribuidos-tp1
 
 services:
   worker:
-    container_name: worker
     image: worker:latest
     entrypoint: python3 /main.py
     networks:
       - dtp1_net
+    scale: 2
 
   client:
     container_name: client
@@ -17,6 +17,8 @@ services:
       - dtp1_net
     volumes:
       - ./data:/data
+    depends_on:
+      - worker
 
 networks:
   dtp1_net:
