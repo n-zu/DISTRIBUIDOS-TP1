@@ -8,6 +8,8 @@ class Config:
   def __init__(self):
     self.context = None
     self.sub_socket = None
+    self.pull_socket = None
+    self.push_socket = None
 
 
 config = Config()
@@ -37,6 +39,12 @@ def zmqSetup():
   config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "weather")
   config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "stations")
   config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "finish_upload")
+
+  config.pull_socket = config.context.socket(zmq.PULL)
+  config.pull_socket.connect(f'tcp://client:5557')
+
+  config.push_socket = config.context.socket(zmq.PUSH)
+  config.push_socket.connect(f'tcp://sink:5558')
 
 
 def setup():

@@ -9,6 +9,13 @@ services:
       - dtp1_net
     scale: 2
 
+  sink:
+    image: sink:latest
+    entrypoint: python3 /main.py
+    networks:
+      - dtp1_net
+    environment:
+      - WORKERS_AMOUNT=2
   client:
     container_name: client
     image: client:latest
@@ -17,8 +24,8 @@ services:
       - dtp1_net
     volumes:
       - ./data:/data
-    depends_on:
-      - worker
+    environment:
+      - WORKERS_AMOUNT=2
 
 networks:
   dtp1_net:
