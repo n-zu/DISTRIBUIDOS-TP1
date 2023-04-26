@@ -1,5 +1,6 @@
 import logging
 from .setup import config
+from .util import parse_float
 from .store import store_weather, store_station
 
 
@@ -17,12 +18,12 @@ def handle_static_data(data_type, city, rows):
   if data_type == "weather":
     for row in rows:
       [date, precipitation] = parse_weather(row)
-      store_weather(city, date, precipitation)
+      store_weather(city, date, parse_float(precipitation))
 
   elif data_type == "stations":
     for row in rows:
       [year, code, lat, lng] = parse_station(row)
-      store_station(city, year+"-"+code, lat, lng)
+      store_station(city, year+"-"+code, parse_float(lat), parse_float(lng))
 
   else:
     logging.error(f"Received unknown data type {data_type}")

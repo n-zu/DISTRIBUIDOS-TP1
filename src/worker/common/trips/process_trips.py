@@ -1,24 +1,14 @@
 import logging
+from .trip import Trip
 from ..setup import config
-
-
-class Trip:
-  def __init__(self, city, start_date, start_station_code, end_date, end_station_code, duration_sec, is_member, yearid):
-    self.city = city
-    self.start_date = start_date
-    self.end_date = end_date
-    self.start_station_code = yearid + "-" + start_station_code
-    self.end_station_code = yearid + "-" + end_station_code
-    self.duration_sec = duration_sec
-
-  def enrich(get_weather, get_station):
-    pass
+from ..store import get_weather, get_station
+from ..stats.update_stats import update_stats
 
 
 def process_trip(trip: Trip):
 
-  # trip.enrich( get_weather, get_station )
-  pass
+  trip.enrich(get_weather, get_station)
+  update_stats(trip)
 
 
 def process_trips_batch(city, batch):

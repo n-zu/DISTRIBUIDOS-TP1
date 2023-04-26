@@ -1,7 +1,7 @@
 import logging
 from common.setup import setup
 from common.static_data import receive_static_data
-from common.trips.trips import process_trips
+from common.trips.process_trips import process_trips
 
 from common.store import weather, stations
 
