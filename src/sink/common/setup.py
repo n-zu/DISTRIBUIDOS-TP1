@@ -4,11 +4,13 @@ import logging
 
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557
+SUB_ADDR = "client:5556"
 
 
 class Config:
   def __init__(self):
     self.context = None
+    self.sub_socket = None
     self.pull_socket = None
     self.client_socket = None
     self.workers_amount = 0
@@ -41,6 +43,11 @@ def zmqSetup():
 
   config.client_socket = context.socket(zmq.PUSH)
   config.client_socket.bind(f"tcp://*:{PUSH_TO_CLIENT_PORT}")
+
+  config.sub_socket = context.socket(zmq.SUB)
+  config.sub_socket.connect(f'tcp://{SUB_ADDR}')
+  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "stations")
+  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "finish_upload")
 
 
 def envSetup():

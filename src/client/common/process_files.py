@@ -49,11 +49,11 @@ def parse_stations_batch(rows):
   """
   Parse a list of lines of csv station data
   Return in a string format, separating each row with a semicolon and each column with a comma
-  Fields: year, code, lat, lng
+  Fields: year, code, lat, lng, name
   """
   def parse_row(row):
     # code,name,latitude,longitude,yearid
-    return row[4] + "," + row[0] + "," + row[2] + "," + row[3]
+    return row[4] + "," + row[0] + "," + row[2] + "," + row[3] + "," + row[1]
 
   return ";".join([parse_row(row) for row in rows])
 

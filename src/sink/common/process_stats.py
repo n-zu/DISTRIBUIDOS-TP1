@@ -1,4 +1,13 @@
 import logging
+from .static.store import get_station
+
+
+def add_station_name(city, id):
+  name = get_station(city, id)
+  if name is None:
+    return id
+  else:
+    return f"{id}-{name}"
 
 
 def process_stats(stats):
@@ -41,11 +50,12 @@ def process_cantidad_de_viajes_2016_y_2017(stats):
   result = {}
   for ciudad in stats:
     result[ciudad] = []
-    for estacion in stats[ciudad]:
-      cantidad_viajes_2016, cantidad_viajes_2017 = stats[ciudad][estacion]
+    for station_id in stats[ciudad]:
+      cantidad_viajes_2016, cantidad_viajes_2017 = stats[ciudad][station_id]
       try:
         if (int(cantidad_viajes_2017) >= COEF_2016v2017 * int(cantidad_viajes_2016)):
-          result[ciudad].append(estacion)
+          station = add_station_name(ciudad, station_id)
+          result[ciudad].append(station)
       except:
         logging.error(
             f"Error al procesar cantidad_de_viajes_2016_y_2017: {cantidad_viajes_2016}x2=={cantidad_viajes_2017}")
@@ -54,16 +64,18 @@ def process_cantidad_de_viajes_2016_y_2017(stats):
 
 
 MIN_AVG_DIST = 6
+MONTREAL = "montreal"
 
 
 def process_distancias_montreal(stats):
   result = []
-  for estacion in stats:
-    distancia_acumulada, cantidad_viajes = stats[estacion]
+  for station_id in stats:
+    distancia_acumulada, cantidad_viajes = stats[station_id]
     try:
       distancia_avg = float(distancia_acumulada) / int(cantidad_viajes)
       if float(distancia_avg) >= MIN_AVG_DIST:
-        result.append(estacion)
+        station = add_station_name(MONTREAL, station_id)
+        result.append(station)
     except:
       logging.error(
           f"Error al procesar distancias_montreal: {distancia_acumulada}/{cantidad_viajes}")

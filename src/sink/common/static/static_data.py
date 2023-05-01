@@ -1,12 +1,6 @@
 import logging
-from .setup import config
-from .util import parse_float
-from .store import store_weather, store_station, weather, stations
-
-
-def parse_weather(row):
-  # date, prectot
-  return row.split(",")
+from ..setup import config
+from .store import store_station, stations
 
 
 def parse_station(row):
@@ -15,15 +9,11 @@ def parse_station(row):
 
 
 def handle_static_data(data_type, city, rows):
-  if data_type == "weather":
-    for row in rows:
-      [date, precipitation] = parse_weather(row)
-      store_weather(city, date, parse_float(precipitation))
 
-  elif data_type == "stations":
+  if data_type == "stations":
     for row in rows:
       [year, code, lat, lng, name] = parse_station(row)
-      store_station(city, year+"-"+code, parse_float(lat), parse_float(lng))
+      store_station(city, year+"-"+code, name)
 
   else:
     logging.error(f"Received unknown data type {data_type}")
@@ -49,7 +39,6 @@ def receive_static_data():
   config.sub_socket.close()
 
   logging.info("Finished receiving static data")
-  for city in weather:
-    logging.info(f"Weather - {city}: {len(weather[city])}")
+
   for city in stations:
     logging.info(f"Stations - {city}: {len(stations[city])}")
