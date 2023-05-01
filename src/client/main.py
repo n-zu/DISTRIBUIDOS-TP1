@@ -7,7 +7,6 @@ from time import sleep
 
 def main():
   setup()
-  sleep(5)  # TODO: Replace with a proper synchronization mechanism
 
   upload_weather()
   upload_stations()

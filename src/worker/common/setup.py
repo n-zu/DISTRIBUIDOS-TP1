@@ -47,6 +47,12 @@ def zmqSetup():
   config.push_socket.connect(f'tcp://sink:5558')
 
 
+def sync():
+  logging.debug("Sending ready to sink")
+  config.push_socket.send_string("ready")
+
+
 def setup():
   loggingSetup()
   zmqSetup()
+  sync()

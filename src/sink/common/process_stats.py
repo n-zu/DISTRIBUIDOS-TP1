@@ -17,6 +17,7 @@ def process_stats(stats):
   processed_stats[key] = process_distancias_montreal(
       stats["distancias_montreal"])
 
+  logging.info("Processed stats")
   return processed_stats
 
 

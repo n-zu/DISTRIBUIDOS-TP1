@@ -53,7 +53,13 @@ def envSetup():
   logging.debug(f"Workers amount: {config.workers_amount}")
 
 
+def sync():
+  s = config.sink_socket.recv_string()
+  logging.debug(f"Received sync: {s}")
+
+
 def setup():
   loggingSetup()
   zmqSetup()
   envSetup()
+  sync()
