@@ -21,6 +21,6 @@ def stream_trips():
     def _send_trips_batch(batch):
       send_trips_batch(batch, city)
 
-    process_csv(f'data/{city}/trips.csv', _send_trips_batch, 50)
+    process_csv(f'{config.data_path}/{city}/trips.csv', _send_trips_batch, 50)
 
   send_to_all_workers('finish')

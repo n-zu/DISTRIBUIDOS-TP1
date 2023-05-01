@@ -27,6 +27,7 @@ services:
       - ./data:/data
     environment:
       - WORKERS_AMOUNT=2
+      - DATA_PATH=/data/test
 
 networks:
   dtp1_net:

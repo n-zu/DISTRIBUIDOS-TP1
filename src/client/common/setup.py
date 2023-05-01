@@ -14,6 +14,7 @@ class Config:
     self.push_socket = None
     self.sink_socket = None
     self.workers_amount = 0
+    self.data_path = None
 
 
 config = Config()
@@ -51,6 +52,8 @@ def zmqSetup():
 def envSetup():
   config.workers_amount = int(os.environ['WORKERS_AMOUNT'])
   logging.debug(f"Workers amount: {config.workers_amount}")
+  config.data_path = os.environ['DATA_PATH']
+  logging.debug(f"Data path: {config.data_path}")
 
 
 def sync():

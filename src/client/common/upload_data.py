@@ -1,4 +1,5 @@
 import logging
+from .setup import config
 from .process_files import process_csv, parse_weather_batch, parse_stations_batch
 from .send_to_workers import publish_to_workers
 
@@ -13,12 +14,12 @@ def upload(file, upload_batch_fn):
       upload_batch_fn(batch, city)
 
     try:
-      process_csv(f'data/{city}/{file}', _upload_batch_fn)
+      process_csv(f'{config.data_path}/{city}/{file}', _upload_batch_fn)
     except FileNotFoundError:
-      logging.error(f'could not find data/{city}/{file}')
+      logging.error(f'could not find {config.data_path}/{city}/{file}')
       continue
     except Exception as e:
-      logging.error(f'error uploading data/{city}/{file}: {e}')
+      logging.error(f'error uploading {config.data_path}/{city}/{file}: {e}')
       continue
 
 
