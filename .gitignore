@@ -1,4 +1,5 @@
 *.DS_Store
 *.csv
 *.zip
+*.json
 __pycache__
