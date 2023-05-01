@@ -1,7 +1,7 @@
 import logging
 from .setup import config
 from .util import parse_float
-from .store import store_weather, store_station
+from .store import store_weather, store_station, weather, stations
 
 
 def parse_weather(row):
@@ -47,4 +47,9 @@ def receive_static_data():
     handle_static_data(data_type, city, rows[1:])
 
   config.sub_socket.close()
+
   logging.info("Finished receiving static data")
+  for city in weather:
+    logging.info(f"Weather - {city}: {len(weather[city])}")
+  for city in stations:
+    logging.info(f"Stations - {city}: {len(stations[city])}")

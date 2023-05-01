@@ -1,6 +1,18 @@
+from haversine import haversine
+
 
 def distance(lat1, lon1, lat2, lon2):
-  return ((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2) ** 0.5
+  try:
+    return haversine((lat1, lon1), (lat2, lon2), unit='km')
+  except:
+    return None
+
+
+def try_float(value):
+  try:
+    return float(value)
+  except:
+    return None
 
 
 class Trip:
@@ -10,7 +22,7 @@ class Trip:
     self.end_date = end_date.split(' ')[0]
     self.start_station_code = yearid + "-" + start_station_code
     self.end_station_code = yearid + "-" + end_station_code
-    self.duration_sec = duration_sec
+    self.duration_sec = try_float(duration_sec)
 
     self.precipitation = None
     self.distance = None

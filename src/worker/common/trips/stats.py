@@ -1,4 +1,7 @@
-from ..trips.trip import Trip
+from .trip import Trip
+from ..setup import config
+import json
+import logging
 
 stats = {
     "viajes_con_precipitacion_mayor_a_30mm": {
@@ -18,6 +21,9 @@ stats = {
 def update_viajes_con_precipitacion_mayor_a_30mm(trip: Trip):
   key = "viajes_con_precipitacion_mayor_a_30mm"
   if trip.precipitation < 30:
+    return
+  
+  if not trip.duration_sec or trip.duration_sec is None:
     return
 
   if trip.start_date not in stats[key]:
@@ -59,6 +65,9 @@ def update_distancias_montreal(trip: Trip):
   if trip.city != "montreal":
     return
 
+  if not trip.distance or trip.distance is None:
+    return
+
   if trip.end_station_code not in stats[key]:
     stats[key][trip.end_station_code] = (0, 0)
 
@@ -73,3 +82,9 @@ def update_stats(trip: Trip):
   update_viajes_con_precipitacion_mayor_a_30mm(trip)
   update_cantidad_de_viajes_2016_y_2017(trip)
   update_distancias_montreal(trip)
+
+
+def upload_stats():
+  stats_msg = json.dumps(stats)
+  config.push_socket.send_string(stats_msg)
+  logging.debug(f"Uploaded stats {stats}")

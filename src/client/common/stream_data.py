@@ -16,13 +16,11 @@ def send_trips_batch(batch, city):
 def stream_trips():
   """Stream trips to the workers"""
 
-  config.sink_socket.send_string("start_streaming")
-
   for city in CITIES:
 
     def _send_trips_batch(batch):
       send_trips_batch(batch, city)
 
-    process_csv(f'data/{city}/trips.csv', _send_trips_batch, 10, 10)
+    process_csv(f'data/{city}/trips.csv', _send_trips_batch, 50)
 
   send_to_all_workers('finish')

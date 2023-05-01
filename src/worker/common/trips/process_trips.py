@@ -2,7 +2,7 @@ import logging
 from .trip import Trip
 from ..setup import config
 from ..store import get_weather, get_station
-from ..stats.update_stats import update_stats
+from .stats import update_stats, upload_stats
 
 
 def process_trip(trip: Trip):
@@ -30,8 +30,7 @@ def process_trips():
 
     rows = data.split(';')
     header = rows[0].split(',')
-    logging.info(f"Received: {header}")
-    logging.debug(rows)  # TODO: delete this line
+    logging.debug(f"Received: {header}")
 
     if header[0] != 'trips':
       logging.error(f"Expected 'trips', received {header[0]}")
@@ -39,7 +38,5 @@ def process_trips():
 
     process_trips_batch(header[1], rows[1:])
 
-    config.push_socket.send_string(rows[0])  # TODO: delete this line
-
-  # config.pull_socket.close()
-  config.push_socket.send_string('finish')
+  logging.info("Finished processing trips")
+  upload_stats()

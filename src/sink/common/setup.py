@@ -2,17 +2,15 @@ import os
 import zmq
 import logging
 
-PUB_PORT = 5556
-PUSH_PORT = 5557
-PULL_FROM_SINK_ADDR = "sink:5557"
+PULL_PORT = 5558
+PUSH_TO_CLIENT_PORT = 5557
 
 
 class Config:
   def __init__(self):
     self.context = None
-    self.pub_socket = None
-    self.push_socket = None
-    self.sink_socket = None
+    self.pull_socket = None
+    self.client_socket = None
     self.workers_amount = 0
 
 
@@ -36,16 +34,13 @@ def loggingSetup():
 
 
 def zmqSetup():
-  config.context = zmq.Context()
+  context = zmq.Context()
 
-  config.pub_socket = config.context.socket(zmq.PUB)
-  config.pub_socket.bind(f'tcp://*:{PUB_PORT}')
+  config.pull_socket = context.socket(zmq.PULL)
+  config.pull_socket.bind(f"tcp://*:{PULL_PORT}")
 
-  config.push_socket = config.context.socket(zmq.PUSH)
-  config.push_socket.bind(f'tcp://*:{PUSH_PORT}')
-
-  config.sink_socket = config.context.socket(zmq.PULL)
-  config.sink_socket.connect(f'tcp://{PULL_FROM_SINK_ADDR}')
+  config.client_socket = context.socket(zmq.PUSH)
+  config.client_socket.bind(f"tcp://*:{PUSH_TO_CLIENT_PORT}")
 
 
 def envSetup():

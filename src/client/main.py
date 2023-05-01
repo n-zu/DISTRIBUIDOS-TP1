@@ -1,4 +1,5 @@
 from common.setup import setup
+from common.get_stats import get_stats
 from common.upload_data import upload_weather, upload_stations, finish_upload
 from common.stream_data import stream_trips
 from time import sleep
@@ -12,13 +13,9 @@ def main():
   upload_stations()
   finish_upload()
 
-  sleep(5)  # TODO: Remove this, when stream_trips() is implemented
-
   stream_trips()
 
-  sleep(5)  # TODO: Remove this, when get_stats() is implemented
-
-  # get_stats()
+  get_stats()
 
 
 if __name__ == "__main__":

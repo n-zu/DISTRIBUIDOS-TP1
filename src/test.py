@@ -1,8 +1,11 @@
+from copy import deepcopy
 from worker.common.static_data import handle_static_data
 from worker.common.store import weather, stations
 from worker.common.trips.trip import Trip
 from worker.common.trips.process_trips import process_trip
-from worker.common.stats.update_stats import stats
+from worker.common.trips.stats import stats
+from sink.common.join_stats import join_stats
+from sink.common.process_stats import process_stats
 
 print("Testing static data")
 
@@ -39,7 +42,6 @@ print("------WEATHER------")
 print(weather)
 print("------STATIONS------")
 print(stations)
-print("------TRIPS------")
 
 trips = [
     # city, start_date, start_station_code, end_date, end_station_code, duration_sec, is_member, yearid
@@ -58,4 +60,18 @@ trips = [
 for trip in trips:
   process_trip(trip)
 
+print("------STATS------")
 print(stats)
+
+stats1 = deepcopy(stats)
+stats2 = deepcopy(stats)
+
+joined_stats = join_stats(stats1, stats2)
+
+print("------STATS x2------")
+print(joined_stats)
+
+processed_stats = process_stats(joined_stats)
+
+print("------PROCESSED STATS------")
+print(processed_stats)
