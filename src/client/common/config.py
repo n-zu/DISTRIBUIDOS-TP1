@@ -1,6 +1,7 @@
 import os
 import zmq
 import logging
+from signal import signal, SIGINT, SIGTERM
 
 PUB_PORT = 5556
 PUSH_PORT = 5557
@@ -61,8 +62,18 @@ def sync():
   logging.debug(f"Received sync: {s}")
 
 
+def signalHandler(signum, frame):
+  logging.info(f"Received signal: {signum}")
+  config.context.term()
+  exit(0)
+
+
 def setup():
   loggingSetup()
   zmqSetup()
   envSetup()
   sync()
+
+  TERM_SIGNALS = [SIGINT, SIGTERM]
+  for sig in TERM_SIGNALS:
+    signal(sig, signalHandler)

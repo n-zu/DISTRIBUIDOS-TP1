@@ -1,6 +1,7 @@
 import os
 import zmq
 import logging
+from signal import signal, SIGINT, SIGTERM
 
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557
@@ -63,8 +64,18 @@ def sync():
   config.client_socket.send_string("System Up")
 
 
+def signalHandler(signum, frame):
+  logging.info(f"Received signal: {signum}")
+  config.context.term()
+  exit(0)
+
+
 def setup():
   loggingSetup()
   zmqSetup()
   envSetup()
   sync()
+
+  TERM_SIGNALS = [SIGINT, SIGTERM]
+  for sig in TERM_SIGNALS:
+    signal(sig, signalHandler)

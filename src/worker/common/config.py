@@ -1,5 +1,6 @@
 import zmq
 import logging
+from signal import signal, SIGINT, SIGTERM
 
 SUB_ADDR = "client:5556"
 
@@ -52,7 +53,17 @@ def sync():
   config.push_socket.send_string("ready")
 
 
+def signalHandler(signum, frame):
+  logging.info(f"Received signal: {signum}")
+  config.context.term()
+  exit(0)
+
+
 def setup():
   loggingSetup()
   zmqSetup()
   sync()
+
+  TERM_SIGNALS = [SIGINT, SIGTERM]
+  for sig in TERM_SIGNALS:
+    signal(sig, signalHandler)
