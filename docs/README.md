@@ -56,15 +56,11 @@ El middleware permite la comunicación utilizando patrones de request-reply, pub
 
 En esta sección se describirán las clases y estados relevantes del sistema, mostrando cómo se relacionan entre sí y cómo cumplen con los requerimientos funcionales y no funcionales.
 
-### Classes
-
-### States
-
 ### Flujo de datos
 
 El siguiente DAG representa el flujo de datos del sistema:
 
-![dataflow](diagrams/dataflow.png)
+![dataflow](diagrams/dag/dataflow.png)
 
 La información de los archivos de clima, estaciones y viajes puede ser agregada en un registro, mientras que la ciudad es un dato implícito de los archivos.
 
@@ -72,31 +68,28 @@ A partir de este registro podemos separar 3 ramas, una para cada estadística re
 
 A continuación, se plantea un modelo a partir del cual transformamos la información de un registro en un objeto que nos permita calcular las estadísticas requeridas.
 
-![dataflow2](diagrams/dataflow2.png)
+![dataflow2](diagrams/dag/dataflow2.png)
 
 Se presenta el formato de objeto a partir del análisis previo:
 
 ```json
 {
   "viajes_con_precipitaciones_mayor_a_30mm": {
-    "duracion_total": 0,
-    "viajes": 0
+    "fecha_1": ["duracion_total", "#viajes"],
+    "fecha_N": ["duracion_total", "#viajes"]
   },
   "cantidad_de_viajes": {
-    "estacion1": [2016, 2017],
-    "estacion2": [2016, 2017]
+    "ciudad": {
+      "estacion_1": ["#viajes_2016", "#viajes_2017"],
+      "estacion_N": ["#viajes_2016", "#viajes_2017"]
+    }
   },
   "estaciones_montreal": {
-    "estacion1": {
-      "tiempo_en_llegar_total": 0,
-      "cantidad_de_viajes": 0
-    },
-    "estacion2": {}
+    "estacion_1": ["tiempo_acumulado", "#viajes"],
+    "estacion_N": ["tiempo_acumulado", "#viajes"]
   }
 }
 ```
-
-> Es importante notar que una estación esta definida no solo por su nombre, sino también por la ciudad en la que se encuentra.
 
 Podemos ver como esta información puede irse acumulando de manera independiente de manera paralela, y luego ser combinada en un único objeto que contenga la información de todas las estadísticas.
 
@@ -122,23 +115,33 @@ En esta sección se describirán los flujos de secuencia y las actividades relev
 
 ### Activities
 
-![activity diagram](diagrams/activity.png)
+![activity diagram](diagrams/processes/activity.png)
 
 Vemos en el diagrama la interacción entre los componentes del sistema.
 
 - El cliente envía los datos de clima a todos los workers, utilizando un patron pub-sub.
-- El cliente envía los datos de estaciones a todos los workers, utilizando un patron pub-sub.
+- El cliente envía los datos de estaciones a todos los workers, y al sink, utilizando un patron pub-sub.
 - El cliente envía los datos de viaje a los workers de manera distribuida, utilizando un patron push-pull.
   - Los clientes procesan los datos según el [pipeline](#pipeline) definido previamente.
 - Los workers envían los resultados parciales al sink, que los agrega en un único objeto y los envía al cliente.
 
 ## Development View
 
-En esta sección se describirán los componentes y paquetes relevantes del sistema, mostrando cómo se organizan y cómo se cumplen con los requerimientos funcionales y no funcionales.
-
-### Components
+En esta sección se describirán los componentes y paquetes relevantes del sistema, mostrando cómo se organizan.
 
 ### Packets
+
+#### Client
+
+![client packet](diagrams/packets/client.png)
+
+#### Worker
+
+![worker packet](diagrams/packets/worker.png)
+
+#### Sink
+
+![sink packet](diagrams/packets/sink.png)
 
 ## Physical View
 
@@ -146,7 +149,7 @@ La vista física muestra cómo los componentes del sistema se despliegan en la i
 
 ### Deployment
 
-![deployment diagram](diagrams/deployment.png)
+![deployment diagram](diagrams/physical/deployment.png)
 
 Los nodos son desplegados de manera independiente, y se comunican entre sí a través de un middleware específico.
 
@@ -154,19 +157,6 @@ El middleware en cuestión se basa en [ZeroMQ](http://zeromq.org/), de modo que 
 
 ### Robustness
 
-![robustness diagram](diagrams/robustness.png)
+![robustness diagram](diagrams/physical/robustness.png)
 
 Como vemos en el diagrama que, se prevé el escalamiento de workers, a modo de incrementar el computo mediante un modelo de _Worker por Item_.
-
----
-
-## OLD
-
-Esquemas viejos donde se consideraban las siguientes opciones:
-
-- El uso de rabbitmq: se descarto debido a que generaba gran dependecia y este seria cargado con todos los mensajes del sistema.
-- Los archivos estaticos de _weather_ y _stations_ pueden ser levantados en memoria desde cualquier parte del sistema. Se aclaro luego que debe ser enviado por el cliente.
-- Se hace una mezcla de _Worker por Filter_ y _Worker por Item_. Esto se descarto luego ya que se considero que el procesamiento de un dato es simple y justifica la comunicación con otra elemento de procesamiento; de modo que se simplifica el sistema.
-
-![old_deployment](diagrams/old_deployment.svg)
-![old_robustness](diagrams/old_robustness.png)
