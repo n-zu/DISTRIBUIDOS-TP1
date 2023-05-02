@@ -306,11 +306,11 @@ pre[data-line] .line-highlight[data-end]:after {
       <div class="mume markdown-preview  ">
       <h1 class="mume-header" id="bike-rides-analyzer---docs">Bike Rides Analyzer - Docs</h1>
 
-<h2 class="mume-header" id="scope">Scope</h2>
+<h2 class="mume-header" id="alcance">Alcance</h2>
 
 <p>El proyecto Bike Rides Analyzer consiste en el dise&#xF1;o y desarrollo de un sistema distribuido que analiza registros de viajes realizados con bicicletas en la red p&#xFA;blica de grandes ciudades.<br>
 Los registros contienen informaci&#xF3;n sobre la duraci&#xF3;n del viaje, estaci&#xF3;n de inicio y fin, y se complementa con datos de la ubicaci&#xF3;n y nombre de las estaciones, as&#xED; como la cantidad de precipitaciones del d&#xED;a del viaje.</p>
-<h2 class="mume-header" id="scenarios">Scenarios</h2>
+<h2 class="mume-header" id="escenarios">Escenarios</h2>
 
 <h3 class="mume-header" id="requerimientos-funcionales">Requerimientos Funcionales</h3>
 
@@ -332,7 +332,7 @@ Los registros contienen informaci&#xF3;n sobre la duraci&#xF3;n del viaje, estac
 <ul>
 <li>El usuario obtiene las estad&#xED;sticas finales del sistema.</li>
 </ul>
-<h2 class="mume-header" id="software-architecture">Software Architecture</h2>
+<h2 class="mume-header" id="arquitectura">Arquitectura</h2>
 
 <p>El sistema distribuido Bike Rides Analyzer estar&#xE1; compuesto por varios componentes que trabajar&#xE1;n juntos para procesar los registros de viajes realizados con bicicletas. A continuaci&#xF3;n, se describen los principales componentes de la arquitectura:</p>
 <h3 class="mume-header" id="cliente">Cliente</h3>
@@ -346,10 +346,10 @@ Los registros contienen informaci&#xF3;n sobre la duraci&#xF3;n del viaje, estac
 <p>El sink ser&#xE1; el encargado de recibir los resultados parciales enviados por los workers y combinarlos en un &#xFA;nico objeto que contendr&#xE1; todas las estad&#xED;sticas finales. Este componente enviar&#xE1; el resultado final al cliente para su posterior procesamiento y an&#xE1;lisis.</p>
 <h3 class="mume-header" id="middleware">Middleware</h3>
 
-<p>Se utilizar&#xE1; un middleware espec&#xED;fico para la comunicaci&#xF3;n entre los componentes del sistema.<br>
-Este middleware se encargar&#xE1; de la serializaci&#xF3;n y deserializaci&#xF3;n de los mensajes intercambiados entre los componentes, as&#xED; como de la distribuci&#xF3;n de los mensajes entre los workers.<br>
-El middleware permite la comunicaci&#xF3;n utilizando patrones de request-reply, publish-subscribe y push-pull.</p>
-<h2 class="mume-header" id="architectural-goals--constraints">Architectural Goals &amp; Constraints</h2>
+<p>Se utilizar&#xE1; zmq para la comunicaci&#xF3;n entre los componentes del sistema.</p>
+<p>Para la serializaci&#xF3;n y deserializaci&#xF3;n de los mensajes intercambiados entre los componentes, se utiliza un formato basado en csv para los registros y JSON para las estad&#xED;sticas.</p>
+<p>El middleware permite la comunicaci&#xF3;n utilizando patrones de request-reply, publish-subscribe y push-pull.</p>
+<h2 class="mume-header" id="objetivos-y-restricciones">Objetivos y Restricciones</h2>
 
 <ul>
 <li>El sistema debe estar optimizado para entornos multi-computadoras y soportar el incremento de los elementos de c&#xF3;mputo para escalar los vol&#xFA;menes de informaci&#xF3;n a procesar.</li>
@@ -358,43 +358,35 @@ El middleware permite la comunicaci&#xF3;n utilizando patrones de request-reply,
 <li>Recepci&#xF3;n de registros de viajes progresivamente, a medida que se reciben de diferentes ciudades.</li>
 <li>El soporte de una &#xFA;nica ejecuci&#xF3;n del procesamiento y el manejo de se&#xF1;ales SIGTERM.</li>
 </ul>
-<h2 class="mume-header" id="logical-view">Logical View</h2>
+<h2 class="mume-header" id="vista-l%C3%B3gica">Vista l&#xF3;gica</h2>
 
 <p>En esta secci&#xF3;n se describir&#xE1;n las clases y estados relevantes del sistema, mostrando c&#xF3;mo se relacionan entre s&#xED; y c&#xF3;mo cumplen con los requerimientos funcionales y no funcionales.</p>
-<h3 class="mume-header" id="classes">Classes</h3>
-
-<h3 class="mume-header" id="states">States</h3>
-
 <h3 class="mume-header" id="flujo-de-datos">Flujo de datos</h3>
 
 <p>El siguiente DAG representa el flujo de datos del sistema:</p>
-<p><img src="diagrams/dataflow.png" alt="dataflow"></p>
+<p><img src="diagrams/dag/dataflow.png" alt="dataflow"></p>
 <p>La informaci&#xF3;n de los archivos de clima, estaciones y viajes puede ser agregada en un registro, mientras que la ciudad es un dato impl&#xED;cito de los archivos.</p>
 <p>A partir de este registro podemos separar 3 ramas, una para cada estad&#xED;stica requerida.</p>
 <p>A continuaci&#xF3;n, se plantea un modelo a partir del cual transformamos la informaci&#xF3;n de un registro en un objeto que nos permita calcular las estad&#xED;sticas requeridas.</p>
-<p><img src="diagrams/dataflow2.png" alt="dataflow2"></p>
+<p><img src="diagrams/dag/dataflow2.png" alt="dataflow2"></p>
 <p>Se presenta el formato de objeto a partir del an&#xE1;lisis previo:</p>
 <pre data-role="codeBlock" data-info="json" class="language-json"><span class="token punctuation">{</span>
   <span class="token property">&quot;viajes_con_precipitaciones_mayor_a_30mm&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">&quot;duracion_total&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-    <span class="token property">&quot;viajes&quot;</span><span class="token operator">:</span> <span class="token number">0</span>
+    <span class="token property">&quot;fecha_1&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;duracion_total&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;fecha_N&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;duracion_total&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes&quot;</span><span class="token punctuation">]</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">&quot;cantidad_de_viajes&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">&quot;estacion1&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">2016</span><span class="token punctuation">,</span> <span class="token number">2017</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token property">&quot;estacion2&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">2016</span><span class="token punctuation">,</span> <span class="token number">2017</span><span class="token punctuation">]</span>
+    <span class="token property">&quot;ciudad&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;estacion_1&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;#viajes_2016&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes_2017&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;estacion_N&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;#viajes_2016&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes_2017&quot;</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">&quot;estaciones_montreal&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">&quot;estacion1&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-      <span class="token property">&quot;tiempo_en_llegar_total&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-      <span class="token property">&quot;cantidad_de_viajes&quot;</span><span class="token operator">:</span> <span class="token number">0</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token property">&quot;estacion2&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token property">&quot;estacion_1&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;tiempo_acumulado&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;estacion_N&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;tiempo_acumulado&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;#viajes&quot;</span><span class="token punctuation">]</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-</pre><blockquote>
-<p>Es importante notar que una estaci&#xF3;n esta definida no solo por su nombre, sino tambi&#xE9;n por la ciudad en la que se encuentra.</p>
-</blockquote>
-<p>Podemos ver como esta informaci&#xF3;n puede irse acumulando de manera independiente de manera paralela, y luego ser combinada en un &#xFA;nico objeto que contenga la informaci&#xF3;n de todas las estad&#xED;sticas.</p>
+</pre><p>Podemos ver como esta informaci&#xF3;n puede irse acumulando de manera independiente de manera paralela, y luego ser combinada en un &#xFA;nico objeto que contenga la informaci&#xF3;n de todas las estad&#xED;sticas.</p>
 <h4 class="mume-header" id="pipeline">Pipeline</h4>
 
 <p>De ese modo, se define un pipeline que consiste de los siguientes pasos:</p>
@@ -406,18 +398,16 @@ El middleware permite la comunicaci&#xF3;n utilizando patrones de request-reply,
 <div class="mermaid">graph LR
 A[Enriquecer datos] --&gt; B[Formatear datos]
 B --&gt; C[Agrupar datos]
-</div><h2 class="mume-header" id="process-view">Process View</h2>
+</div><h2 class="mume-header" id="vista-de-procesos">Vista de procesos</h2>
 
 <p>En esta secci&#xF3;n se describir&#xE1;n los flujos de secuencia y las actividades relevantes del sistema, mostrando c&#xF3;mo se cumplen con los requerimientos funcionales y no funcionales.</p>
-<h3 class="mume-header" id="sequences">Sequences</h3>
+<h3 class="mume-header" id="actividades">Actividades</h3>
 
-<h3 class="mume-header" id="activities">Activities</h3>
-
-<p><img src="diagrams/activity.png" alt="activity diagram"></p>
+<p><img src="diagrams/processes/activity.png" alt="activity diagram"></p>
 <p>Vemos en el diagrama la interacci&#xF3;n entre los componentes del sistema.</p>
 <ul>
 <li>El cliente env&#xED;a los datos de clima a todos los workers, utilizando un patron pub-sub.</li>
-<li>El cliente env&#xED;a los datos de estaciones a todos los workers, utilizando un patron pub-sub.</li>
+<li>El cliente env&#xED;a los datos de estaciones a todos los workers, y al sink, utilizando un patron pub-sub.</li>
 <li>El cliente env&#xED;a los datos de viaje a los workers de manera distribuida, utilizando un patron push-pull.
 <ul>
 <li>Los clientes procesan los datos seg&#xFA;n el <a href="#pipeline">pipeline</a> definido previamente.</li>
@@ -425,36 +415,36 @@ B --&gt; C[Agrupar datos]
 </li>
 <li>Los workers env&#xED;an los resultados parciales al sink, que los agrega en un &#xFA;nico objeto y los env&#xED;a al cliente.</li>
 </ul>
-<h2 class="mume-header" id="development-view">Development View</h2>
+<h2 class="mume-header" id="vista-de-desarrollo">Vista de desarrollo</h2>
 
-<p>En esta secci&#xF3;n se describir&#xE1;n los componentes y paquetes relevantes del sistema, mostrando c&#xF3;mo se organizan y c&#xF3;mo se cumplen con los requerimientos funcionales y no funcionales.</p>
-<h3 class="mume-header" id="components">Components</h3>
+<p>En esta secci&#xF3;n se describir&#xE1;n los componentes y paquetes relevantes del sistema, mostrando c&#xF3;mo se organizan.</p>
+<h3 class="mume-header" id="paquetes">Paquetes</h3>
 
-<h3 class="mume-header" id="packets">Packets</h3>
+<h4 class="mume-header" id="client">Client</h4>
 
-<h2 class="mume-header" id="physical-view">Physical View</h2>
+<p><img src="diagrams/packets/client.png" alt="client packet"></p>
+<h4 class="mume-header" id="worker">Worker</h4>
+
+<p><img src="diagrams/packets/worker.png" alt="worker packet"></p>
+<h4 class="mume-header" id="sink-1">Sink</h4>
+
+<p><img src="diagrams/packets/sink.png" alt="sink packet"></p>
+<h2 class="mume-header" id="vista-f%C3%ADsica">Vista f&#xED;sica</h2>
 
 <p>La vista f&#xED;sica muestra c&#xF3;mo los componentes del sistema se despliegan en la infraestructura de hardware. En nuestro caso, el sistema distribuido est&#xE1; dise&#xF1;ado para ser desplegado en un entorno multi-computadora.</p>
-<h3 class="mume-header" id="deployment">Deployment</h3>
+<h3 class="mume-header" id="despliegue">Despliegue</h3>
 
-<p><img src="diagrams/deployment.png" alt="deployment diagram"></p>
+<p><img src="diagrams/physical/deployment.png" alt="deployment diagram"></p>
 <p>Los nodos son desplegados de manera independiente, y se comunican entre s&#xED; a trav&#xE9;s de un middleware espec&#xED;fico.</p>
 <p>El middleware en cuesti&#xF3;n se basa en <a href="http://zeromq.org/">ZeroMQ</a>, de modo que no tendremos un nodo centralizado que coordine la comunicaci&#xF3;n entre los nodos, sino que cada nodo se conectar&#xE1; a los dem&#xE1;s nodos que necesite.</p>
-<h3 class="mume-header" id="robustness">Robustness</h3>
+<h3 class="mume-header" id="robustez">Robustez</h3>
 
-<p><img src="diagrams/robustness.png" alt="robustness diagram"></p>
+<p><img src="diagrams/physical/robustness.png" alt="robustness diagram"></p>
 <p>Como vemos en el diagrama que, se prev&#xE9; el escalamiento de workers, a modo de incrementar el computo mediante un modelo de <em>Worker por Item</em>.</p>
-<hr>
-<h2 class="mume-header" id="old">OLD</h2>
+<h2 class="mume-header" id="evoluci%C3%B3n-del-sistema">Evoluci&#xF3;n del sistema</h2>
 
-<p>Esquemas viejos donde se consideraban las siguientes opciones:</p>
-<ul>
-<li>El uso de rabbitmq: se descarto debido a que generaba gran dependecia y este seria cargado con todos los mensajes del sistema.</li>
-<li>Los archivos estaticos de <em>weather</em> y <em>stations</em> pueden ser levantados en memoria desde cualquier parte del sistema. Se aclaro luego que debe ser enviado por el cliente.</li>
-<li>Se hace una mezcla de <em>Worker por Filter</em> y <em>Worker por Item</em>. Esto se descarto luego ya que se considero que el procesamiento de un dato es simple y justifica la comunicaci&#xF3;n con otra elemento de procesamiento; de modo que se simplifica el sistema.</li>
-</ul>
-<p><img src="diagrams/old_deployment.svg" alt="old_deployment"><br>
-<img src="diagrams/old_robustness.png" alt="old_robustness"></p>
+<p>Se plantea la posibilidad de seguir desarrollando el sistema, descomponiendo sus partes para poder aprovechar la distribuci&#xF3;n de los datos y el procesamiento.</p>
+<p><img src="diagrams/physical/robustness-next.png" alt="evolution diagram"></p>
 
       </div>
       <div class="md-sidebar-toc">
@@ -466,12 +456,12 @@ B --&gt; C[Agrupar datos]
           </summary>
         <div>
           <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#scope" class="md-toc-link">
-            <p>Scope</p>
+          <a href="#alcance" class="md-toc-link">
+            <p>Alcance</p>
 
           </a></div><details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#scenarios" class="md-toc-link"><p>Scenarios</p>
+          <a href="#escenarios" class="md-toc-link"><p>Escenarios</p>
 </a>
           </summary>
         <div>
@@ -488,7 +478,7 @@ B --&gt; C[Agrupar datos]
       </details>
     <details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#software-architecture" class="md-toc-link"><p>Software Architecture</p>
+          <a href="#arquitectura" class="md-toc-link"><p>Arquitectura</p>
 </a>
           </summary>
         <div>
@@ -512,24 +502,16 @@ B --&gt; C[Agrupar datos]
         </div>
       </details>
     <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#architectural-goals--constraints" class="md-toc-link">
-            <p>Architectural Goals &amp; Constraints</p>
+          <a href="#objetivos-y-restricciones" class="md-toc-link">
+            <p>Objetivos y Restricciones</p>
 
           </a></div><details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#logical-view" class="md-toc-link"><p>Logical View</p>
+          <a href="#vista-l&#xF3;gica" class="md-toc-link"><p>Vista l&#xF3;gica</p>
 </a>
           </summary>
         <div>
-          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#classes" class="md-toc-link">
-            <p>Classes</p>
-
-          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#states" class="md-toc-link">
-            <p>States</p>
-
-          </a></div><details style="padding:0;;padding-left:24px;" open>
+          <details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
           <a href="#flujo-de-datos" class="md-toc-link"><p>Flujo de datos</p>
 </a>
@@ -547,58 +529,67 @@ B --&gt; C[Agrupar datos]
       </details>
     <details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#process-view" class="md-toc-link"><p>Process View</p>
+          <a href="#vista-de-procesos" class="md-toc-link"><p>Vista de procesos</p>
 </a>
           </summary>
         <div>
           <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#sequences" class="md-toc-link">
-            <p>Sequences</p>
-
-          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#activities" class="md-toc-link">
-            <p>Activities</p>
+          <a href="#actividades" class="md-toc-link">
+            <p>Actividades</p>
 
           </a></div>
         </div>
       </details>
     <details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#development-view" class="md-toc-link"><p>Development View</p>
+          <a href="#vista-de-desarrollo" class="md-toc-link"><p>Vista de desarrollo</p>
+</a>
+          </summary>
+        <div>
+          <details style="padding:0;;padding-left:24px;" open>
+        <summary class="md-toc-link-wrapper">
+          <a href="#paquetes" class="md-toc-link"><p>Paquetes</p>
 </a>
           </summary>
         <div>
           <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#components" class="md-toc-link">
-            <p>Components</p>
+          <a href="#client" class="md-toc-link">
+            <p>Client</p>
 
           </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#packets" class="md-toc-link">
-            <p>Packets</p>
+          <a href="#worker" class="md-toc-link">
+            <p>Worker</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#sink-1" class="md-toc-link">
+            <p>Sink</p>
 
           </a></div>
         </div>
       </details>
+    
+        </div>
+      </details>
     <details style="padding:0;;padding-left:24px;" open>
         <summary class="md-toc-link-wrapper">
-          <a href="#physical-view" class="md-toc-link"><p>Physical View</p>
+          <a href="#vista-f&#xED;sica" class="md-toc-link"><p>Vista f&#xED;sica</p>
 </a>
           </summary>
         <div>
           <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#deployment" class="md-toc-link">
-            <p>Deployment</p>
+          <a href="#despliegue" class="md-toc-link">
+            <p>Despliegue</p>
 
           </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#robustness" class="md-toc-link">
-            <p>Robustness</p>
+          <a href="#robustez" class="md-toc-link">
+            <p>Robustez</p>
 
           </a></div>
         </div>
       </details>
     <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
-          <a href="#old" class="md-toc-link">
-            <p>OLD</p>
+          <a href="#evoluci&#xF3;n-del-sistema" class="md-toc-link">
+            <p>Evoluci&#xF3;n del sistema</p>
 
           </a></div>
         </div>

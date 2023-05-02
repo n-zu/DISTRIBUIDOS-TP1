@@ -1,11 +1,11 @@
 # Bike Rides Analyzer - Docs
 
-## Scope
+## Alcance
 
 El proyecto Bike Rides Analyzer consiste en el diseño y desarrollo de un sistema distribuido que analiza registros de viajes realizados con bicicletas en la red pública de grandes ciudades.
 Los registros contienen información sobre la duración del viaje, estación de inicio y fin, y se complementa con datos de la ubicación y nombre de las estaciones, así como la cantidad de precipitaciones del día del viaje.
 
-## Scenarios
+## Escenarios
 
 ### Requerimientos Funcionales
 
@@ -22,7 +22,7 @@ Los registros contienen información sobre la duración del viaje, estación de 
 
 - El usuario obtiene las estadísticas finales del sistema.
 
-## Software Architecture
+## Arquitectura
 
 El sistema distribuido Bike Rides Analyzer estará compuesto por varios componentes que trabajarán juntos para procesar los registros de viajes realizados con bicicletas. A continuación, se describen los principales componentes de la arquitectura:
 
@@ -40,11 +40,13 @@ El sink será el encargado de recibir los resultados parciales enviados por los 
 
 ### Middleware
 
-Se utilizará un middleware específico para la comunicación entre los componentes del sistema.
-Este middleware se encargará de la serialización y deserialización de los mensajes intercambiados entre los componentes, así como de la distribución de los mensajes entre los workers.
+Se utilizará zmq para la comunicación entre los componentes del sistema.
+
+Para la serialización y deserialización de los mensajes intercambiados entre los componentes, se utiliza un formato basado en csv para los registros y JSON para las estadísticas.
+
 El middleware permite la comunicación utilizando patrones de request-reply, publish-subscribe y push-pull.
 
-## Architectural Goals & Constraints
+## Objetivos y Restricciones
 
 - El sistema debe estar optimizado para entornos multi-computadoras y soportar el incremento de los elementos de cómputo para escalar los volúmenes de información a procesar.
 - La comunicación entre los componentes se realiza a través de un middleware específico que se adapta a las necesidades del sistema.
@@ -52,7 +54,7 @@ El middleware permite la comunicación utilizando patrones de request-reply, pub
 - Recepción de registros de viajes progresivamente, a medida que se reciben de diferentes ciudades.
 - El soporte de una única ejecución del procesamiento y el manejo de señales SIGTERM.
 
-## Logical View
+## Vista lógica
 
 En esta sección se describirán las clases y estados relevantes del sistema, mostrando cómo se relacionan entre sí y cómo cumplen con los requerimientos funcionales y no funcionales.
 
@@ -107,13 +109,15 @@ A[Enriquecer datos] --> B[Formatear datos]
 B --> C[Agrupar datos]
 ```
 
-## Process View
+## Vista de procesos
 
 En esta sección se describirán los flujos de secuencia y las actividades relevantes del sistema, mostrando cómo se cumplen con los requerimientos funcionales y no funcionales.
 
-### Sequences
+<!--
+### Secuencias
+-->
 
-### Activities
+### Actividades
 
 ![activity diagram](diagrams/processes/activity.png)
 
@@ -125,11 +129,11 @@ Vemos en el diagrama la interacción entre los componentes del sistema.
   - Los clientes procesan los datos según el [pipeline](#pipeline) definido previamente.
 - Los workers envían los resultados parciales al sink, que los agrega en un único objeto y los envía al cliente.
 
-## Development View
+## Vista de desarrollo
 
 En esta sección se describirán los componentes y paquetes relevantes del sistema, mostrando cómo se organizan.
 
-### Packets
+### Paquetes
 
 #### Client
 
@@ -143,11 +147,11 @@ En esta sección se describirán los componentes y paquetes relevantes del siste
 
 ![sink packet](diagrams/packets/sink.png)
 
-## Physical View
+## Vista física
 
 La vista física muestra cómo los componentes del sistema se despliegan en la infraestructura de hardware. En nuestro caso, el sistema distribuido está diseñado para ser desplegado en un entorno multi-computadora.
 
-### Deployment
+### Despliegue
 
 ![deployment diagram](diagrams/physical/deployment.png)
 
@@ -155,8 +159,14 @@ Los nodos son desplegados de manera independiente, y se comunican entre sí a tr
 
 El middleware en cuestión se basa en [ZeroMQ](http://zeromq.org/), de modo que no tendremos un nodo centralizado que coordine la comunicación entre los nodos, sino que cada nodo se conectará a los demás nodos que necesite.
 
-### Robustness
+### Robustez
 
 ![robustness diagram](diagrams/physical/robustness.png)
 
 Como vemos en el diagrama que, se prevé el escalamiento de workers, a modo de incrementar el computo mediante un modelo de _Worker por Item_.
+
+## Evolución del sistema
+
+Se plantea la posibilidad de seguir desarrollando el sistema, descomponiendo sus partes para poder aprovechar la distribución de los datos y el procesamiento.
+
+![evolution diagram](diagrams/physical/robustness-next.png)
