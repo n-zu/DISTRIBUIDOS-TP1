@@ -1,5 +1,5 @@
 import json
-from .setup import config
+from .config import config
 
 
 def send_to_client(msg):

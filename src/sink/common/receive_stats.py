@@ -1,7 +1,7 @@
 import logging
 import json
 from .join_stats import join_stats
-from .setup import config
+from .config import config
 stats = {}
 
 

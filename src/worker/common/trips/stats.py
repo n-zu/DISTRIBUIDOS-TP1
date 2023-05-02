@@ -1,5 +1,5 @@
 from .trip import Trip
-from ..setup import config
+from ..config import config
 import json
 import logging
 
@@ -22,7 +22,7 @@ def update_viajes_con_precipitacion_mayor_a_30mm(trip: Trip):
   key = "viajes_con_precipitacion_mayor_a_30mm"
   if trip.precipitation < 30:
     return
-  
+
   if not trip.duration_sec or trip.duration_sec is None:
     return
 

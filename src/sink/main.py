@@ -1,4 +1,4 @@
-from common.setup import setup
+from common.config import setup
 from common.receive_stats import receive_stats, stats
 from common.process_stats import process_stats
 from common.communication import send_to_client

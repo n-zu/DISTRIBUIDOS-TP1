@@ -1,5 +1,5 @@
 import logging
-from .setup import config
+from .config import config
 from .process_files import process_csv, parse_weather_batch, parse_stations_batch
 from .send_to_workers import publish_to_workers
 

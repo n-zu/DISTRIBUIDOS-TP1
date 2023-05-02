@@ -1,5 +1,5 @@
 import logging
-from ..setup import config
+from ..config import config
 from .store import store_station, stations
 
 

@@ -1,4 +1,4 @@
-from .setup import config
+from .config import config
 
 
 def publish_to_workers(data):

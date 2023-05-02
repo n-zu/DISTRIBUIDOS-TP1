@@ -1,4 +1,4 @@
-from common.setup import setup
+from common.config import setup
 from common.get_stats import get_stats
 from common.upload_data import upload_weather, upload_stations, finish_upload
 from common.stream_data import stream_trips

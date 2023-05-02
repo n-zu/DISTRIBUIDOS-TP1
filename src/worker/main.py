@@ -1,5 +1,5 @@
 import logging
-from common.setup import setup
+from common.config import setup
 from common.static_data import receive_static_data
 from common.trips.process_trips import process_trips
 

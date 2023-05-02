@@ -1,6 +1,6 @@
 import json
 import logging
-from .setup import config
+from .config import config
 
 
 def get_stats():

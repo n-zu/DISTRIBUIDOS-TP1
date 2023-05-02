@@ -1,6 +1,6 @@
 import logging
 from .trip import Trip
-from ..setup import config
+from ..config import config
 from ..store import get_weather, get_station
 from .stats import update_stats, upload_stats
 

@@ -1,5 +1,5 @@
 import logging
-from .setup import config
+from .config import config
 from .util import parse_float
 from .store import store_weather, store_station, weather, stations
 

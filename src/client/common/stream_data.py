@@ -1,5 +1,5 @@
 import logging
-from .setup import config
+from .config import config
 from .process_files import process_csv, parse_trips_batch
 from .send_to_workers import send_to_all_workers
 
