@@ -49,6 +49,9 @@ def zmqSetup():
   config.sink_socket = config.context.socket(zmq.PULL)
   config.sink_socket.connect(f'tcp://{PULL_FROM_SINK_ADDR}')
 
+  # Limit queue size of push socket to two times the amount of workers
+  config.push_socket.set_hwm(config.workers_amount * 2)
+
 
 def envSetup():
   config.workers_amount = int(os.environ['WORKERS_AMOUNT'])
@@ -70,8 +73,8 @@ def signalHandler(signum, frame):
 
 def setup():
   loggingSetup()
-  zmqSetup()
   envSetup()
+  zmqSetup()
   sync()
 
   TERM_SIGNALS = [SIGINT, SIGTERM]

@@ -8,7 +8,7 @@ services:
     networks:
       - dtp1_net
     deploy:
-      replicas: 2
+      replicas: 3
 
   sink:
     image: sink:latest
@@ -16,7 +16,7 @@ services:
     networks:
       - dtp1_net
     environment:
-      - WORKERS_AMOUNT=2
+      - WORKERS_AMOUNT=3
   client:
     container_name: client
     image: client:latest
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./data:/data
     environment:
-      - WORKERS_AMOUNT=2
+      - WORKERS_AMOUNT=3
       - DATA_PATH=/data/full
 
 networks:

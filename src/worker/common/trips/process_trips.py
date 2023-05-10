@@ -19,8 +19,25 @@ def process_trips_batch(city, batch):
     process_trip(trip)
 
 
+def log_received_trips(header, amount, count):
+  PARTIAL_COUNT_LIM = 50000
+
+  count["total"] += amount
+  count["partial"] += amount
+
+  if count["partial"] >= PARTIAL_COUNT_LIM:
+    logging.info(
+        f"Received {header} | {amount}/{count['partial']}/{count['total']}")
+    count["partial"] = 0
+
+
 def process_trips():
   """Process trips data"""
+
+  count = {
+      "total": 0,
+      "partial": 0,
+  }
 
   while True:
     data = config.pull_socket.recv_string()
@@ -30,7 +47,7 @@ def process_trips():
 
     rows = data.split(';')
     header = rows[0].split(',')
-    logging.debug(f"Received: {header}")
+    log_received_trips(header, len(rows)-1, count)
 
     if header[0] != 'trips':
       logging.error(f"Expected 'trips', received {header[0]}")
