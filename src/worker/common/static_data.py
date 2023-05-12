@@ -5,12 +5,14 @@ from .store import store_weather, store_station, weather, stations
 
 
 def parse_weather(row):
-  # date, prectot
-  return row.split(",")
+  # in: "date,prectot,qv2m,rh2m,ps,t2m_range,ts,t2mdew,t2mwet,t2m_max,t2m_min,t2m,ws50m_range,ws10m_range,ws50m_min,ws10m_min,ws50m_max,ws10m_max,ws50m,ws10m,yearid"
+  # out: ["date", "prectot"]
+  return row.split(",")[0:2]
 
 
 def parse_station(row):
-  # code, lat, lng, year, name
+  # in: "code,name,latitude,longitude,yearid"
+  # out: ["code", "name", "lat", "lng", "yearid"]
   return row.split(",")
 
 
@@ -22,7 +24,7 @@ def handle_static_data(data_type, city, rows):
 
   elif data_type == "stations":
     for row in rows:
-      [year, code, lat, lng, name] = parse_station(row)
+      [code, _name, lat, lng, year] = parse_station(row)
       store_station(city, year+"-"+code, parse_float(lat), parse_float(lng))
 
   else:

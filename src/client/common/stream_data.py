@@ -1,6 +1,6 @@
 import logging
 from .config import config
-from .process_files import process_csv, parse_trips_batch
+from .process_files import process_csv, join_batch
 from .send_to_workers import send_to_all_workers
 
 CITIES = ["montreal", "toronto", "washington"]
@@ -8,7 +8,7 @@ CITIES = ["montreal", "toronto", "washington"]
 
 def send_trips_batch(batch, city):
   data = f"trips,{city};"
-  data += parse_trips_batch(batch)
+  data += join_batch(batch)
   config.push_socket.send_string(data)
 
 
@@ -27,4 +27,5 @@ def stream_trips():
     process_csv(f'{config.data_path}/{city}/trips.csv',
                 _send_trips_batch, log_func=log_send_trips)
 
+  logging.info("Finished sending trips")
   send_to_all_workers('finish')

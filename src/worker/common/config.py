@@ -43,6 +43,8 @@ def zmqSetup():
 
   config.pull_socket = config.context.socket(zmq.PULL)
   config.pull_socket.connect(f'tcp://client:5557')
+  config.pull_socket.setsockopt(zmq.RCVTIMEO, 1000)
+  config.pull_socket.setsockopt(zmq.RCVHWM, 1)
 
   config.push_socket = config.context.socket(zmq.PUSH)
   config.push_socket.connect(f'tcp://sink:5558')

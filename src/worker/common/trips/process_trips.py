@@ -40,7 +40,11 @@ def process_trips():
   }
 
   while True:
-    data = config.pull_socket.recv_string()
+    try:
+      data = config.pull_socket.recv_string()
+    except Exception as e:
+      logging.error(f"Error receiving data: {e}")
+      break
 
     if data == 'finish':
       break

@@ -4,7 +4,8 @@ from .store import store_station, stations
 
 
 def parse_station(row):
-  # code, lat, lng, year, name
+  # in: "code,name,latitude,longitude,yearid"
+  # out: ["code", "name", "lat", "lng", "yearid"]
   return row.split(",")
 
 
@@ -12,7 +13,7 @@ def handle_static_data(data_type, city, rows):
 
   if data_type == "stations":
     for row in rows:
-      [year, code, lat, lng, name] = parse_station(row)
+      [code, name, _lat, _lng, year] = parse_station(row)
       store_station(city, year+"-"+code, name)
 
   else:

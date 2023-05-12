@@ -1,6 +1,6 @@
 import logging
 from .config import config
-from .process_files import process_csv, parse_weather_batch, parse_stations_batch
+from .process_files import process_csv, join_batch
 from .send_to_workers import publish_to_workers
 
 CITIES = ["montreal", "toronto", "washington"]
@@ -25,7 +25,7 @@ def upload(file, upload_batch_fn):
 
 def upload_weather_batch(batch, city):
   data = "weather,"+city + ";"
-  data += parse_weather_batch(batch)
+  data += join_batch(batch)
   publish_to_workers(data)
 
 
@@ -35,7 +35,7 @@ def upload_weather():
 
 def upload_stations_batch(batch, city):
   data = "stations,"+city + ";"
-  data += parse_stations_batch(batch)
+  data += join_batch(batch)
   publish_to_workers(data)
 
 
