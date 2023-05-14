@@ -2,6 +2,7 @@ import logging
 from .config import config
 from .process_files import process_csv, join_batch
 from .send_to_workers import send_to_all_workers
+import middleware
 
 CITIES = ["montreal", "toronto", "washington"]
 
@@ -9,7 +10,7 @@ CITIES = ["montreal", "toronto", "washington"]
 def send_trips_batch(batch, city):
   data = f"trips,{city};"
   data += join_batch(batch)
-  config.push_socket.send_string(data)
+  middleware.push(data)
 
 
 def stream_trips():

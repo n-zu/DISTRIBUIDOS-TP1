@@ -20,8 +20,8 @@ def init( pub_port = None, sub_addr = None, push_addr = None, pull_addr = None, 
       middleware["push_socket"].bind(f'tcp://{ip}:{port}')
     else:
       middleware["push_socket"].bind(f'tcp://*:{port}')
-    if hwm:
-      middleware["push_socket"].set_hwm(hwm)
+      if hwm:
+        middleware["push_socket"].set_hwm(hwm)
   
   if pull_addr:
     ip, port = pull_addr
@@ -30,8 +30,8 @@ def init( pub_port = None, sub_addr = None, push_addr = None, pull_addr = None, 
       middleware["pull_socket"].connect(f'tcp://{ip}:{port}')
     else:
       middleware["pull_socket"].bind(f'tcp://*:{port}')
-    if hwm:
-      middleware["pull_socket"].set_sockopt(zmq.RCVHWM, hwm)
+      if hwm:
+        middleware["pull_socket"].set_sockopt(zmq.RCVHWM, hwm)
 
 def subscribe( topic ):
   if middleware["sub_socket"]:

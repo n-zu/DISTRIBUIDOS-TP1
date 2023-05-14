@@ -1,12 +1,13 @@
 import json
 import logging
 from .config import config
+import middleware
 
 
 def get_stats():
   """Get stats from the sink"""
 
-  stats = config.sink_socket.recv_string()
+  stats = middleware.pull()
   try:
     stats = json.loads(stats)
   except json.decoder.JSONDecodeError:

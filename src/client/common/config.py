@@ -1,19 +1,16 @@
 import os
-import zmq
 import logging
 from signal import signal, SIGINT, SIGTERM
+import middleware
 
 PUB_PORT = 5556
 PUSH_PORT = 5557
-PULL_FROM_SINK_ADDR = "sink:5557"
+SINK_IP = "sink"
+SINK_PORT = 5557
 
 
 class Config:
   def __init__(self):
-    self.context = None
-    self.pub_socket = None
-    self.push_socket = None
-    self.sink_socket = None
     self.workers_amount = 0
     self.data_path = None
 
@@ -36,21 +33,8 @@ def loggingSetup():
   logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s',
                       datefmt='%H:%M:%S')
 
-
-def zmqSetup():
-  config.context = zmq.Context()
-
-  config.pub_socket = config.context.socket(zmq.PUB)
-  config.pub_socket.bind(f'tcp://*:{PUB_PORT}')
-
-  config.push_socket = config.context.socket(zmq.PUSH)
-  config.push_socket.bind(f'tcp://*:{PUSH_PORT}')
-
-  config.sink_socket = config.context.socket(zmq.PULL)
-  config.sink_socket.connect(f'tcp://{PULL_FROM_SINK_ADDR}')
-
-  # Limit queue size of push socket to two times the amount of workers
-  config.push_socket.set_hwm(config.workers_amount * 2)
+def middleware_setup():
+  middleware.init(pub_port=PUB_PORT, push_addr=(None, PUSH_PORT), pull_addr=(SINK_IP, SINK_PORT), hwm=config.workers_amount * 2)
 
 
 def envSetup():
@@ -61,20 +45,20 @@ def envSetup():
 
 
 def sync():
-  s = config.sink_socket.recv_string()
+  s = middleware.pull()
   logging.debug(f"Received sync: {s}")
 
 
 def signalHandler(signum, frame):
   logging.info(f"Received signal: {signum}")
-  config.context.term()
+  middleware.close()
   exit(0)
 
 
 def setup():
   loggingSetup()
   envSetup()
-  zmqSetup()
+  middleware_setup()
   sync()
 
   TERM_SIGNALS = [SIGINT, SIGTERM]
