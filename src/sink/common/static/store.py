@@ -1,5 +1,5 @@
 import logging
-CITIES = ["montreal", "toronto", "washington"]
+from ..config import CITIES
 
 weather = {}
 stations = {}

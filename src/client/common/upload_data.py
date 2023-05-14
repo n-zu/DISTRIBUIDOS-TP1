@@ -1,9 +1,7 @@
 import logging
 import middleware
-from .config import config
+from .config import config, CITIES
 from .process_files import process_csv, join_batch
-
-CITIES = ["montreal", "toronto", "washington"]
 
 
 def upload(file, upload_batch_fn):

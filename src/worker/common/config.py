@@ -2,6 +2,9 @@ import middleware
 import logging
 from signal import signal, SIGINT, SIGTERM
 
+CITIES = ["montreal", "toronto", "washington"]
+STATIC_DATA = ["weather", "stations"]
+
 SUB_ADDR = "client:5556" # client pub addr (static data)
 PULL_ADDR = ("client",5557) # client push addr (trips)
 PUSH_ADDR = ("sink", 5558) # sink pull addr (sync/stats)
@@ -31,8 +34,10 @@ def middleware_setup():
     timeout_ms=1000,
   )
 
-  topics = ["weather", "stations", "finish_upload"] # TODO: Expand cities
-  middleware.subscribe_all(topics)
+  for data in STATIC_DATA:
+    for city in CITIES:
+      middleware.subscribe(f"{data},{city}")
+  middleware.subscribe("finish_upload")
 
 
 def sync():

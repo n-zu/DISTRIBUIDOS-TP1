@@ -3,6 +3,8 @@ import logging
 from signal import signal, SIGINT, SIGTERM
 import middleware
 
+CITIES = ["montreal", "toronto", "washington"]
+
 PUB_PORT = 5556
 PUSH_PORT = 5557
 SINK_IP = "sink"

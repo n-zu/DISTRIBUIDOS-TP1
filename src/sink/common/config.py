@@ -3,6 +3,9 @@ import logging
 from signal import signal, SIGINT, SIGTERM
 import middleware
 
+CITIES = ["montreal", "toronto", "washington"]
+STATIC_DATA = ["stations"]
+
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557
 SUB_ADDR = "client:5556"
@@ -39,9 +42,10 @@ def middleware_setup():
     pull_addr=(None,PULL_PORT)
   )
 
-  topics = ["stations","finish_upload"] #permutate cities
-
-  middleware.subscribe_all(topics)
+  for data in STATIC_DATA:
+    for city in CITIES:
+      middleware.subscribe(f"{data},{city}")
+  middleware.subscribe("finish_upload")
 
 
 
