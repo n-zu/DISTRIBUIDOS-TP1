@@ -1,16 +1,26 @@
 import zmq
 
-middleware = {
-  "on": False,
-}
+middleware = {"on": False}
 
 class MiddlewareClosed(Exception):
   def __init__(self, message):
     super().__init__(message)
 
-def fail_if_closed():
-  if not middleware["on"]:
-    raise MiddlewareClosed("Middleware is not initialized")
+def fail_if_closed(func):
+  '''
+  Decorator to check if middleware is initialized
+  '''
+  def wrapper(*args, **kwargs):
+    if middleware["on"]:
+      try:
+        return func(*args, **kwargs)
+      except Exception as e:
+        if not middleware["on"]:
+          raise MiddlewareClosed("Middleware closed or not initialized")
+        raise e
+    else:
+      raise MiddlewareClosed("Middleware closed or not initialized")
+  return wrapper
     
 
 def init( pub_port = None, sub_addr = None, push_addr = None, pull_addr = None, hwm = None, timeout_ms = None ):
@@ -69,7 +79,9 @@ def publish( topic, message ):
 @fail_if_closed
 def recv_sub_msg():
   if middleware["sub_socket"]:
-    return middleware["sub_socket"].recv_string()
+    msg = middleware["sub_socket"].recv_string()
+    [topic, data] = msg.split(";", 1)
+    return topic, data
   else:
     raise Exception("No sub socket")
 
@@ -89,7 +101,16 @@ def pull():
   
 @fail_if_closed
 def close():
-  if middleware["context"]:
+    
+  if "pub_socket" in middleware:
+    middleware["pub_socket"].close()
+  if "sub_socket" in middleware:
+    middleware["sub_socket"].close()
+  if "push_socket" in middleware:
+    middleware["push_socket"].close()
+  if "pull_socket" in middleware:
+    middleware["pull_socket"].close()
+  if "context" in middleware:
     middleware["context"].term()
-  else:
-    raise Exception("Not initialized")
+  
+  middleware["on"] = False

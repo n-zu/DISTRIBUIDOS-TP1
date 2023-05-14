@@ -1,3 +1,5 @@
+import logging
+from middleware import MiddlewareClosed
 from common.config import setup
 from common.receive_stats import receive_stats, stats
 from common.process_stats import process_stats
@@ -16,4 +18,7 @@ def main():
 
 
 if __name__ == "__main__":
-  main()
+  try:
+    main()
+  except MiddlewareClosed:
+    logging.warning("Program Terminated")

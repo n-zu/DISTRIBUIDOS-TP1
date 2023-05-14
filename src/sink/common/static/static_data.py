@@ -24,18 +24,17 @@ def receive_static_data():
   """Receive static data from the client and store it"""
 
   while True:
-    string = recv_sub_msg()
-    rows = string.split(";")
-    header = rows[0]
+    header,data = recv_sub_msg()
+    rows = data.split(";")
 
-    logging.debug(f"Received static data: {header} ({len(rows)-1})")
+    logging.debug(f"Received static data: {header} ({len(rows)})")
 
     if header == "finish_upload":
       break
 
     [data_type, city] = header.split(",")
 
-    handle_static_data(data_type, city, rows[1:])
+    handle_static_data(data_type, city, rows)
 
   logging.info("Finished receiving static data")
 

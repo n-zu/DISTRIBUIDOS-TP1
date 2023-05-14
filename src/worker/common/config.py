@@ -43,7 +43,6 @@ def sync():
 def signalHandler(signum, frame):
   logging.info(f"Received signal: {signum}")
   middleware.close()
-  exit(0)
 
 
 def setup():

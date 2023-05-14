@@ -42,6 +42,8 @@ def process_trips():
   while True:
     try:
       data = middleware.pull()
+    except middleware.MiddlewareClosed as e:
+      raise e
     except Exception as e:
       logging.error(f"Error receiving data: {e}")
       break

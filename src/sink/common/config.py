@@ -1,7 +1,7 @@
 import os
 import logging
 from signal import signal, SIGINT, SIGTERM
-from middleware import init, close, subscribe_all, push, pull
+import middleware
 
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557
@@ -33,7 +33,7 @@ def loggingSetup():
 
 
 def middleware_setup():
-  init(
+  middleware.init(
     sub_addr=SUB_ADDR,
     push_addr=(None,PUSH_TO_CLIENT_PORT),
     pull_addr=(None,PULL_PORT)
@@ -41,7 +41,7 @@ def middleware_setup():
 
   topics = ["stations","finish_upload"] #permutate cities
 
-  subscribe_all(topics)
+  middleware.subscribe_all(topics)
 
 
 
@@ -52,16 +52,15 @@ def envSetup():
 
 def sync():
   for i in range(config.workers_amount):
-    s = pull()
+    s = middleware.pull()
     logging.debug(f"Received [{s}] from worker {i}")
 
-  push("System Up")
+  middleware.push("System Up")
 
 
 def signalHandler(signum, frame):
   logging.info(f"Received signal: {signum}")
-  close()
-  exit(0)
+  middleware.close()
 
 
 def setup():

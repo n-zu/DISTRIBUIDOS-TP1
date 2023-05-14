@@ -21,7 +21,7 @@ def get_weather(city, date):
   try:
     return weather[city][date]
   except KeyError:
-    logging.error(f"Could not find weather for {city} on {date}")
+    logging.warning(f"Could not find weather for {city} on {date}")
     return 0  # We asume no data means no precipitation
 
 
@@ -29,5 +29,5 @@ def get_station(city, id):
   try:
     return stations[city][id]
   except KeyError:
-    logging.error(f"Could not find station {id} in {city}")
+    logging.warning(f"Could not find station {id} in {city}")
     return (None, None)  # We asume no data means unknown location
