@@ -1,5 +1,5 @@
 import logging
-from ..config import config
+from ..middleware import recv_sub_msg
 from .store import store_station, stations
 
 
@@ -24,7 +24,7 @@ def receive_static_data():
   """Receive static data from the client and store it"""
 
   while True:
-    string = config.sub_socket.recv_string()
+    string = recv_sub_msg()
     rows = string.split(";")
     header = rows[0]
 
@@ -36,8 +36,6 @@ def receive_static_data():
     [data_type, city] = header.split(",")
 
     handle_static_data(data_type, city, rows[1:])
-
-  config.sub_socket.close()
 
   logging.info("Finished receiving static data")
 

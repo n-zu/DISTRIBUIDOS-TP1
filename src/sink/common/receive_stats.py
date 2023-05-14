@@ -2,11 +2,12 @@ import logging
 import json
 from .join_stats import join_stats
 from .config import config
+from .middleware import pull
 stats = {}
 
 
 def receive_stats_message():
-  s = config.pull_socket.recv_string()
+  s = pull()
   # logging.debug(f"Received: {s}")
 
   recv_stats = json.loads(s)

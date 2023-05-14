@@ -1,7 +1,7 @@
 import os
-import zmq
 import logging
 from signal import signal, SIGINT, SIGTERM
+from .middleware import init, close, subscribe_all, push, pull
 
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557
@@ -10,10 +10,6 @@ SUB_ADDR = "client:5556"
 
 class Config:
   def __init__(self):
-    self.context = None
-    self.sub_socket = None
-    self.pull_socket = None
-    self.client_socket = None
     self.workers_amount = 0
 
 
@@ -36,19 +32,17 @@ def loggingSetup():
                       datefmt='%H:%M:%S')
 
 
-def zmqSetup():
-  context = zmq.Context()
+def middleware_setup():
+  init(
+    sub_addr=SUB_ADDR,
+    push_addr=(None,PUSH_TO_CLIENT_PORT),
+    pull_addr=(None,PULL_PORT)
+  )
 
-  config.pull_socket = context.socket(zmq.PULL)
-  config.pull_socket.bind(f"tcp://*:{PULL_PORT}")
+  topics = ["stations","finish_upload"] #permutate cities
 
-  config.client_socket = context.socket(zmq.PUSH)
-  config.client_socket.bind(f"tcp://*:{PUSH_TO_CLIENT_PORT}")
+  subscribe_all(topics)
 
-  config.sub_socket = context.socket(zmq.SUB)
-  config.sub_socket.connect(f'tcp://{SUB_ADDR}')
-  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "stations")
-  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "finish_upload")
 
 
 def envSetup():
@@ -58,21 +52,21 @@ def envSetup():
 
 def sync():
   for i in range(config.workers_amount):
-    s = config.pull_socket.recv_string()
+    s = pull()
     logging.debug(f"Received [{s}] from worker {i}")
 
-  config.client_socket.send_string("System Up")
+  push("System Up")
 
 
 def signalHandler(signum, frame):
   logging.info(f"Received signal: {signum}")
-  config.context.term()
+  close()
   exit(0)
 
 
 def setup():
   loggingSetup()
-  zmqSetup()
+  middleware_setup()
   envSetup()
   sync()
 
