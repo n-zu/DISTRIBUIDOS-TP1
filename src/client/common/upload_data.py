@@ -1,9 +1,7 @@
 import logging
-from .config import config
-from .process_files import process_csv, parse_weather_batch, parse_stations_batch
-from .send_to_workers import publish_to_workers
-
-CITIES = ["montreal", "toronto", "washington"]
+import middleware
+from .config import config, CITIES
+from .process_files import process_csv, join_batch
 
 
 def upload(file, upload_batch_fn):
@@ -24,9 +22,9 @@ def upload(file, upload_batch_fn):
 
 
 def upload_weather_batch(batch, city):
-  data = "weather,"+city + ";"
-  data += parse_weather_batch(batch)
-  publish_to_workers(data)
+  topic = "weather,"+city
+  data = join_batch(batch)
+  middleware.publish(topic,data)
 
 
 def upload_weather():
@@ -34,9 +32,9 @@ def upload_weather():
 
 
 def upload_stations_batch(batch, city):
-  data = "stations,"+city + ";"
-  data += parse_stations_batch(batch)
-  publish_to_workers(data)
+  topic = "stations,"+city
+  data = join_batch(batch)
+  middleware.publish(topic,data)
 
 
 def upload_stations():
@@ -44,5 +42,6 @@ def upload_stations():
 
 
 def finish_upload():
-  publish_to_workers("finish_upload")
+  msg="finish_upload"
+  middleware.publish(msg,msg)
   logging.info("Finished uploading static data")

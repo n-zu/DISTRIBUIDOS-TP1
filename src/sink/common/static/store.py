@@ -1,5 +1,5 @@
 import logging
-CITIES = ["montreal", "toronto", "washington"]
+from ..config import CITIES
 
 weather = {}
 stations = {}
@@ -17,5 +17,5 @@ def get_station(city, id):
   try:
     return stations[city][id]
   except KeyError:
-    logging.error(f"Could not find station {id} in {city}")
+    logging.warning(f"Could not find station {id} in {city}")
     return None  # We asume no data means unknown location

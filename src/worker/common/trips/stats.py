@@ -1,5 +1,5 @@
 from .trip import Trip
-from ..config import config
+import middleware
 import json
 import logging
 
@@ -83,8 +83,13 @@ def update_stats(trip: Trip):
   update_cantidad_de_viajes_2016_y_2017(trip)
   update_distancias_montreal(trip)
 
+def count_stats(stats):
+  count = {}
+  for key in stats:
+    count[key] = len(stats[key])
+  return count
 
 def upload_stats():
   stats_msg = json.dumps(stats)
-  config.push_socket.send_string(stats_msg)
-  logging.debug(f"Uploaded stats {stats}")
+  middleware.push(stats_msg)
+  logging.debug(f"Uploaded stats {count_stats(stats)}")

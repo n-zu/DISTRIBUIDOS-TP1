@@ -1,5 +1,31 @@
 # Bike Rides Analyzer - Docs
 
+- [Bike Rides Analyzer - Docs](#bike-rides-analyzer---docs)
+  - [Alcance](#alcance)
+  - [Escenarios](#escenarios)
+    - [Requerimientos Funcionales](#requerimientos-funcionales)
+    - [Casos de Uso](#casos-de-uso)
+  - [Arquitectura](#arquitectura)
+    - [Cliente](#cliente)
+    - [Workers](#workers)
+    - [Sink](#sink)
+    - [Middleware](#middleware)
+  - [Objetivos y Restricciones](#objetivos-y-restricciones)
+  - [Vista lógica](#vista-lógica)
+    - [Flujo de datos](#flujo-de-datos)
+      - [Pipeline](#pipeline)
+  - [Vista de procesos](#vista-de-procesos)
+    - [Actividades](#actividades)
+  - [Vista de desarrollo](#vista-de-desarrollo)
+    - [Paquetes](#paquetes)
+      - [Client](#client)
+      - [Worker](#worker)
+      - [Sink](#sink-1)
+  - [Vista física](#vista-física)
+    - [Despliegue](#despliegue)
+    - [Robustez](#robustez)
+  - [Evolución del sistema](#evolución-del-sistema)
+
 ## Alcance
 
 El proyecto Bike Rides Analyzer consiste en el diseño y desarrollo de un sistema distribuido que analiza registros de viajes realizados con bicicletas en la red pública de grandes ciudades.

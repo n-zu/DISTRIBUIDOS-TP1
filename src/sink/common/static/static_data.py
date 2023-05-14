@@ -1,10 +1,11 @@
 import logging
-from ..config import config
+from middleware import recv_sub_msg
 from .store import store_station, stations
 
 
 def parse_station(row):
-  # code, lat, lng, year, name
+  # in: "code,name,latitude,longitude,yearid"
+  # out: ["code", "name", "lat", "lng", "yearid"]
   return row.split(",")
 
 
@@ -12,7 +13,7 @@ def handle_static_data(data_type, city, rows):
 
   if data_type == "stations":
     for row in rows:
-      [year, code, lat, lng, name] = parse_station(row)
+      [code, name, _lat, _lng, year] = parse_station(row)
       store_station(city, year+"-"+code, name)
 
   else:
@@ -23,20 +24,17 @@ def receive_static_data():
   """Receive static data from the client and store it"""
 
   while True:
-    string = config.sub_socket.recv_string()
-    rows = string.split(";")
-    header = rows[0]
+    header,data = recv_sub_msg()
+    rows = data.split(";")
 
-    logging.debug(f"Received static data: {header} ({len(rows)-1})")
+    logging.debug(f"Received static data: {header} ({len(rows)})")
 
     if header == "finish_upload":
       break
 
     [data_type, city] = header.split(",")
 
-    handle_static_data(data_type, city, rows[1:])
-
-  config.sub_socket.close()
+    handle_static_data(data_type, city, rows)
 
   logging.info("Finished receiving static data")
 
