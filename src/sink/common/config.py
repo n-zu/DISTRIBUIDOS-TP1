@@ -1,7 +1,7 @@
 import os
 import logging
 from signal import signal, SIGINT, SIGTERM
-from .middleware import init, close, subscribe_all, push, pull
+from middleware import init, close, subscribe_all, push, pull
 
 PULL_PORT = 5558
 PUSH_TO_CLIENT_PORT = 5557

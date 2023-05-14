@@ -1,5 +1,5 @@
 import logging
-from ..middleware import recv_sub_msg
+from middleware import recv_sub_msg
 from .store import store_station, stations
 
 

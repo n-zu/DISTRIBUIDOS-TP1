@@ -2,7 +2,7 @@ import logging
 import json
 from .join_stats import join_stats
 from .config import config
-from .middleware import pull
+from middleware import pull
 stats = {}
 
 
