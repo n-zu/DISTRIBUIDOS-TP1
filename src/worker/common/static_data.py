@@ -1,5 +1,5 @@
 import logging
-from .config import config
+import middleware
 from .util import parse_float
 from .store import store_weather, store_station, weather, stations
 
@@ -35,7 +35,7 @@ def receive_static_data():
   """Receive static data from the client and store it"""
 
   while True:
-    string = config.sub_socket.recv_string()
+    string = middleware.recv_sub_msg()
     rows = string.split(";")
     header = rows[0]
 
@@ -47,8 +47,6 @@ def receive_static_data():
     [data_type, city] = header.split(",")
 
     handle_static_data(data_type, city, rows[1:])
-
-  config.sub_socket.close()
 
   logging.info("Finished receiving static data")
   for city in weather:

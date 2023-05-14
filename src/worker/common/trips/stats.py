@@ -1,5 +1,5 @@
 from .trip import Trip
-from ..config import config
+import middleware
 import json
 import logging
 
@@ -91,5 +91,5 @@ def count_stats(stats):
 
 def upload_stats():
   stats_msg = json.dumps(stats)
-  config.push_socket.send_string(stats_msg)
+  middleware.push(stats_msg)
   logging.debug(f"Uploaded stats {count_stats(stats)}")

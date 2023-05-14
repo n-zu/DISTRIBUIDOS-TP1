@@ -1,19 +1,10 @@
-import zmq
+import middleware
 import logging
 from signal import signal, SIGINT, SIGTERM
 
-SUB_ADDR = "client:5556"
-
-
-class Config:
-  def __init__(self):
-    self.context = None
-    self.sub_socket = None
-    self.pull_socket = None
-    self.push_socket = None
-
-
-config = Config()
+SUB_ADDR = "client:5556" # client pub addr (static data)
+PULL_ADDR = ("client",5557) # client push addr (trips)
+PUSH_ADDR = ("sink", 5558) # sink pull addr (sync/stats)
 
 
 def loggingSetup():
@@ -31,39 +22,33 @@ def loggingSetup():
   logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s',
                       datefmt='%H:%M:%S')
 
+def middleware_setup():
+  middleware.init(
+    sub_addr=SUB_ADDR,
+    pull_addr=PULL_ADDR,
+    push_addr=PUSH_ADDR,
+    hwm=1,
+    timeout_ms=1000,
+  )
 
-def zmqSetup():
-  config.context = zmq.Context()
-  config.sub_socket = config.context.socket(zmq.SUB)
-
-  config.sub_socket.connect(f'tcp://{SUB_ADDR}')
-  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "weather")
-  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "stations")
-  config.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "finish_upload")
-
-  config.pull_socket = config.context.socket(zmq.PULL)
-  config.pull_socket.connect(f'tcp://client:5557')
-  config.pull_socket.setsockopt(zmq.RCVTIMEO, 1000)
-  config.pull_socket.setsockopt(zmq.RCVHWM, 1)
-
-  config.push_socket = config.context.socket(zmq.PUSH)
-  config.push_socket.connect(f'tcp://sink:5558')
+  topics = ["weather", "stations", "finish_upload"] # TODO: Expand cities
+  middleware.subscribe_all(topics)
 
 
 def sync():
   logging.debug("Sending ready to sink")
-  config.push_socket.send_string("ready")
+  middleware.push("ready")
 
 
 def signalHandler(signum, frame):
   logging.info(f"Received signal: {signum}")
-  config.context.term()
+  middleware.close()
   exit(0)
 
 
 def setup():
   loggingSetup()
-  zmqSetup()
+  middleware_setup()
   sync()
 
   TERM_SIGNALS = [SIGINT, SIGTERM]

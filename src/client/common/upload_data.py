@@ -2,7 +2,6 @@ import logging
 import middleware
 from .config import config
 from .process_files import process_csv, join_batch
-from .send_to_workers import publish_to_workers
 
 CITIES = ["montreal", "toronto", "washington"]
 

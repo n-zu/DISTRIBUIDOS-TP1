@@ -1,6 +1,6 @@
 import logging
 from .trip import Trip
-from ..config import config
+import middleware
 from ..store import get_weather, get_station
 from .stats import update_stats, upload_stats
 
@@ -41,7 +41,7 @@ def process_trips():
 
   while True:
     try:
-      data = config.pull_socket.recv_string()
+      data = middleware.pull()
     except Exception as e:
       logging.error(f"Error receiving data: {e}")
       break
