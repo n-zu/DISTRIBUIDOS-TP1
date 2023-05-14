@@ -47,6 +47,9 @@ Los registros contienen información sobre la duración del viaje, estación de 
 ### Casos de Uso
 
 - El usuario obtiene las estadísticas finales del sistema.
+  - La duración promedio de viajes que iniciaron en días con precipitaciones >30mm
+  - Los nombres de estaciones que al menos duplicaron la cantidad de viajes iniciados en ellas entre 2016 y el 2017.
+  - Los nombres de estaciones de Montreal para la que el promedio de los ciclistas recorren más de 6km en llegar a ellas.
 
 ## Arquitectura
 
@@ -54,7 +57,7 @@ El sistema distribuido Bike Rides Analyzer estará compuesto por varios componen
 
 ### Cliente
 
-El cliente será el componente principal del sistema, encargado de coordinar el procesamiento distribuido de los registros de viajes. Su función será la de recibir los datos de clima y estaciones, repartir el trabajo entre los diferentes workers y recibir los resultados finales.
+El cliente es el punto de acceso de los usuarios, se encarga de mandar tanto los datos estaticos como el stream de datos de viajes. Al finalizar el procesamiento de datos este recibira las estadisticas finales del sistema.
 
 ### Workers
 
