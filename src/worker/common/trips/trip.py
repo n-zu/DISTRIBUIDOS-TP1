@@ -15,8 +15,8 @@ class Trip:
     self.city = city
     self.start_date = start_date.split(' ')[0]
     self.end_date = end_date.split(' ')[0]
-    self.start_station_code = yearid + "-" + start_station_code
-    self.end_station_code = yearid + "-" + end_station_code
+    self.start_station_code = yearid.rstrip('\n') + "-" + start_station_code
+    self.end_station_code = yearid.rstrip('\n') + "-" + end_station_code
     self.duration_sec = parse_float(duration_sec)
 
     self.precipitation = None

@@ -14,7 +14,7 @@ def handle_static_data(data_type, city, rows):
   if data_type == "stations":
     for row in rows:
       [code, name, _lat, _lng, year] = parse_station(row)
-      store_station(city, year+"-"+code, name)
+      store_station(city, year.rstrip('\n')+"-"+code, name)
 
   else:
     logging.error(f"Received unknown data type {data_type}")

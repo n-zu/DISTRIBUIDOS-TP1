@@ -1,5 +1,5 @@
 import logging
-from middleware import MiddlewareClosed
+import middleware
 from common.config import setup
 from common.get_stats import get_stats
 from common.upload_data import upload_weather, upload_stations, finish_upload
@@ -7,8 +7,6 @@ from common.stream_data import stream_trips
 
 
 def main():
-  setup()
-
   upload_weather()
   upload_stations()
   finish_upload()
@@ -20,7 +18,9 @@ def main():
 
 if __name__ == "__main__":
   try:
+    setup()
     main()
-  except MiddlewareClosed:
+    middleware.close()
+  except middleware.MiddlewareClosed:
     logging.warning("Program Terminated")
 
