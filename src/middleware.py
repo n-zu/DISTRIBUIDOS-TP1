@@ -1,3 +1,16 @@
+# Middleware for communication between processes
+# 
+# - An agent could do all actions, subscribe, publish, pull and push
+# - Pub/Sub:
+#   - One publisher may have multiple subscribers
+#   - There cant be multiple publishers for one subscriber
+#   - There cant be many to many communication
+# - Pull/Push
+#   - There can be one puller/many pushers or one pusher/many pullers
+#   - The "many" have to specify the (ip,port) of the "one",
+#     while the one specifies which port it uses to communicate.
+#   - There cant be many to many communication
+
 import zmq
 
 middleware = {"on": False}
@@ -23,7 +36,27 @@ def fail_if_closed(func):
   return wrapper
     
 
-def init( pub_port = None, sub_addr = None, push_addr = None, pull_addr = None, hwm = None, timeout_ms = None ):
+def init(
+    pub_port = None,
+    sub_addr = None,
+    push_addr = None,
+    pull_addr = None,
+    hwm = None,
+    timeout_ms = None
+  ):
+  '''
+  Initialize the middleware
+  - pub_port: port from which to publish messages
+  - sub_addr: address to which to subscribe
+  - push_addr: address to which to push messages in a (ip, port) tuple
+    - if ip is None, this process may push to multiple processes from it's defined port
+    - if ip is not None, this process may only push to the process with the specified ip and port
+  - pull_addr: address from which to pull messages in a (ip, port) tuple
+    - if ip is None, this process may pull from multiple processes from it's defined port
+    - if ip is not None, this process may only pull from the process with the specified ip and port
+  - hwm: high water mark for push/pull sockets (how many messages can be queued before blocking push)
+  - timeout_ms: timeout for pull socket in milliseconds
+  '''
   middleware["on"] = True
   middleware["context"] = zmq.Context()
 
@@ -59,6 +92,9 @@ def init( pub_port = None, sub_addr = None, push_addr = None, pull_addr = None, 
 
 @fail_if_closed
 def subscribe( topic ):
+  '''
+  Subscribe to a topic
+  '''
   if middleware["sub_socket"]:
     middleware["sub_socket"].setsockopt_string(zmq.SUBSCRIBE, topic)
   else:
@@ -66,11 +102,17 @@ def subscribe( topic ):
 
 @fail_if_closed
 def subscribe_all( topics ):
+  '''
+  Subscribe to all topics in a list
+  '''
   for topic in topics:
     subscribe(topic)
   
 @fail_if_closed
 def publish( topic, message ):
+  '''
+  Publish a message to a topic
+  '''
   if middleware["pub_socket"]:
     middleware["pub_socket"].send_string(f"{topic};{message}")
   else:
@@ -78,6 +120,10 @@ def publish( topic, message ):
 
 @fail_if_closed
 def recv_sub_msg():
+  '''
+  Receive a message from a subscribed topic
+  returns (topic, data)
+  '''
   if middleware["sub_socket"]:
     msg = middleware["sub_socket"].recv_string()
     [topic, data] = msg.split(";", 1)
@@ -87,6 +133,9 @@ def recv_sub_msg():
 
 @fail_if_closed
 def push( message ):
+  '''
+  Push a message to a puller
+  '''
   if middleware["push_socket"]:
     middleware["push_socket"].send_string(message)
   else:
@@ -94,6 +143,9 @@ def push( message ):
   
 @fail_if_closed
 def pull():
+  '''
+  Pull a message from a pusher
+  '''
   if middleware["pull_socket"]:
     return middleware["pull_socket"].recv_string()
   else:
@@ -101,6 +153,9 @@ def pull():
   
 @fail_if_closed
 def close():
+  '''
+  Close all sockets/file descriptors and clean up
+  '''
     
   if "pub_socket" in middleware:
     middleware["pub_socket"].close()
