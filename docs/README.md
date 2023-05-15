@@ -69,11 +69,9 @@ El sink será el encargado de recibir los resultados parciales enviados por los 
 
 ### Middleware
 
-Se utilizará zmq para la comunicación entre los componentes del sistema.
+Se utiliza un modulo de middleware que abstrae comunicaciones de tipo pub/sub y push/pull. Se implementa utilizando zmq ya que se adapta a las necesidades del sistema, pero podría ser reemplazado de manera transparente.
 
 Para la serialización y deserialización de los mensajes intercambiados entre los componentes, se utiliza un formato basado en csv para los registros y JSON para las estadísticas.
-
-El middleware permite la comunicación utilizando patrones de request-reply, publish-subscribe y push-pull.
 
 ## Objetivos y Restricciones
 
@@ -186,7 +184,7 @@ La vista física muestra cómo los componentes del sistema se despliegan en la i
 
 Los nodos son desplegados de manera independiente, y se comunican entre sí a través de un middleware específico.
 
-El middleware en cuestión se basa en [ZeroMQ](http://zeromq.org/), de modo que no tendremos un nodo centralizado que coordine la comunicación entre los nodos, sino que cada nodo se conectará a los demás nodos que necesite.
+El middleware provee funcionalidades de pub/sub, que se utilizan para distribuir los datos estáticos, y de pull/push, que se utilizan para repartir los registros de viaje entre los workers y devolver los resultados.
 
 ### Robustez
 
