@@ -8,7 +8,13 @@ services:
     networks:
       - dtp1_net
     deploy:
-      replicas: 3
+      replicas: 3 # Needs to be the same as WORKERS_AMOUNT, both in client and sink
+    environment:
+      - SUB_ADDR=client:5556
+      - PULL_IP=client
+      - PULL_PORT=5557
+      - PUSH_IP=sink
+      - PUSH_PORT=5558
 
   sink:
     image: sink:latest
@@ -17,6 +23,9 @@ services:
       - dtp1_net
     environment:
       - WORKERS_AMOUNT=3
+      - PULL_PORT=5558
+      - PUSH_TO_CLIENT_PORT=5557
+      - SUB_ADDR=client:5556
   client:
     container_name: client
     image: client:latest
@@ -28,10 +37,12 @@ services:
     environment:
       - WORKERS_AMOUNT=3
       - DATA_PATH=/data/full
+      - PUB_PORT=5556
+      - PUSH_PORT=5557
+      - SINK_IP=sink
+      - SINK_PORT=5557
 
 networks:
   dtp1_net:
     ipam:
       driver: default
-      config:
-        - subnet: 172.25.125.0/24

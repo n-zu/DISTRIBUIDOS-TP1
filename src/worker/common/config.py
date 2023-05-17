@@ -1,13 +1,10 @@
+import os
 import middleware
 import logging
 from signal import signal, SIGINT, SIGTERM
 
 CITIES = ["montreal", "toronto", "washington"]
 STATIC_DATA = ["weather", "stations"]
-
-SUB_ADDR = "client:5556" # client pub addr (static data)
-PULL_ADDR = ("client",5557) # client push addr (trips)
-PUSH_ADDR = ("sink", 5558) # sink pull addr (sync/stats)
 
 
 def loggingSetup():
@@ -26,6 +23,14 @@ def loggingSetup():
                       datefmt='%H:%M:%S')
 
 def middleware_setup():
+  SUB_ADDR = os.environ['SUB_ADDR']
+  PULL_IP = os.environ['PULL_IP']
+  PULL_PORT = os.environ['PULL_PORT']
+  PUSH_IP = os.environ['PUSH_IP']
+  PUSH_PORT = os.environ['PUSH_PORT']
+  PULL_ADDR = (PULL_IP,PULL_PORT) # client push addr (trips)
+  PUSH_ADDR = (PUSH_IP,PUSH_PORT) # sink pull addr (sync/stats)
+
   middleware.init(
     sub_addr=SUB_ADDR,
     pull_addr=PULL_ADDR,

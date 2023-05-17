@@ -5,11 +5,6 @@ import middleware
 
 CITIES = ["montreal", "toronto", "washington"]
 
-PUB_PORT = 5556
-PUSH_PORT = 5557
-SINK_IP = "sink"
-SINK_PORT = 5557
-
 
 class Config:
   def __init__(self):
@@ -36,6 +31,10 @@ def loggingSetup():
                       datefmt='%H:%M:%S')
 
 def middleware_setup():
+  PUB_PORT = os.environ['PUB_PORT']
+  PUSH_PORT = os.environ['PUSH_PORT']
+  SINK_IP = os.environ['SINK_IP']
+  SINK_PORT = os.environ['SINK_PORT']
   middleware.init(pub_port=PUB_PORT, push_addr=(None, PUSH_PORT), pull_addr=(SINK_IP, SINK_PORT), hwm=config.workers_amount * 2)
 
 

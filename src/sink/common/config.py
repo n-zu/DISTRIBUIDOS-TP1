@@ -6,10 +6,6 @@ import middleware
 CITIES = ["montreal", "toronto", "washington"]
 STATIC_DATA = ["stations"]
 
-PULL_PORT = 5558
-PUSH_TO_CLIENT_PORT = 5557
-SUB_ADDR = "client:5556"
-
 
 class Config:
   def __init__(self):
@@ -36,6 +32,9 @@ def loggingSetup():
 
 
 def middleware_setup():
+  PULL_PORT = int(os.environ['PULL_PORT'])
+  PUSH_TO_CLIENT_PORT = int(os.environ['PUSH_TO_CLIENT_PORT'])
+  SUB_ADDR = os.environ['SUB_ADDR']
   middleware.init(
     sub_addr=SUB_ADDR,
     push_addr=(None,PUSH_TO_CLIENT_PORT),
