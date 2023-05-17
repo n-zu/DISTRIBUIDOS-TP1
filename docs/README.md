@@ -162,6 +162,10 @@ En esta sección se describirán los componentes y paquetes relevantes del siste
 
 ### Paquetes
 
+Vemos la estructura de paquetes de cada componente del sistema en los siguientes diagramas.
+
+Destacamos el uso común del modulo middleware, que es el mismo para todos los componentes.
+
 #### Client
 
 ![client packet](diagrams/packets/client.png)
